@@ -31,8 +31,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("org.springframework.security:spring-security-taglibs")
 
 	//SWAGGER
 	implementation("io.springfox:springfox-swagger2:3.0.0")
@@ -49,7 +47,7 @@ dependencies {
 
 	//JWT
 	implementation ("io.jsonwebtoken:jjwt:0.9.1")
-	implementation ("org.springframework.boot:spring-boot-starter-security")
+//	implementation ("org.springframework.boot:spring-boot-starter-security")
 	implementation ("org.springframework.boot:spring-boot-starter-validation")
 	implementation ("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
 
