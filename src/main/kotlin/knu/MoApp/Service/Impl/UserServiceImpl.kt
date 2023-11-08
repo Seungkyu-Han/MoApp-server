@@ -7,6 +7,7 @@ import knu.MoApp.Repository.UserRepository
 import knu.MoApp.Service.UserService
 import knu.MoApp.data.Dto.Auth.Req.AuthLoginReq
 import knu.MoApp.data.Dto.Auth.Res.AuthLoginRes
+import knu.MoApp.data.Entity.User
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,7 +18,10 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.NoSuchElementException
+import java.security.MessageDigest
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 @Service
 class UserServiceImpl(
@@ -36,20 +40,48 @@ class UserServiceImpl(
 
     private val reqUrl = "https://kauth.kakao.com/oauth/token"
     override fun login(code: String): ResponseEntity<AuthLoginRes?> {
-        val userId:Int
-        try{
-            userId = getKakaoUserIdByKakaoAccessToken(getKakaoAccessToken(code))
-        }catch (e:NoSuchElementException){
-            return ResponseEntity(null, HttpStatus.UNAUTHORIZED)
-        }
+        val kakaoAccessToken = getKakaoAccessToken(code)
 
-        val accessToken = jwtTokenProvider.createAccessToken(userId, secretKey)
+        val element = getJsonElementByAccessToken(kakaoAccessToken)
 
-        val user = userRepository.findByAccessToken(accessToken)
-            ?: return ResponseEntity(null, HttpStatus.UNAUTHORIZED)
+        val id = element?.asJsonObject?.get("id")?.asInt ?: 0
 
+        val optionalUser =  userRepository.findById(element?.asJsonObject?.get("id")?.asInt ?: 0)
 
-        return ResponseEntity(AuthLoginRes(name = user.name, id = user.id, accessToken = accessToken), HttpStatus.OK)
+        if(optionalUser.isEmpty)
+            return register(id)
+
+        val accessToken = jwtTokenProvider.createAccessToken(optionalUser.get().id, secretKey)
+        optionalUser.get().accessToken = accessToken
+        userRepository.save(optionalUser.get())
+
+        return ResponseEntity(AuthLoginRes(name = optionalUser.get().name, id = optionalUser.get().id, accessToken = accessToken), HttpStatus.OK)
+    }
+
+    private fun register(id: Int): ResponseEntity<AuthLoginRes?> {
+        val user = User( id = id, name = toHashName(id), accessToken = jwtTokenProvider.createAccessToken(id, secretKey))
+        userRepository.save(user)
+
+        return ResponseEntity(AuthLoginRes(name = user.name, id = user.id, accessToken = user.accessToken), HttpStatus.CREATED)
+    }
+
+    private fun toHashName(id: Int): String {
+        val now = LocalDateTime.now()
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val formattedDatetime = now.format(formatter)
+
+        val combinedString: String = id.toString() + formattedDatetime
+        val combinedBytes = combinedString.toByteArray()
+
+        val messageDigest = MessageDigest.getInstance("SHA-256")
+        val hashBytes = messageDigest.digest(combinedBytes)
+
+        val stringBuilder = StringBuilder()
+        for (hashByte in hashBytes) stringBuilder.append(String.format("%02x", hashByte))
+
+        return stringBuilder.substring(0, 8).uppercase(Locale.getDefault())
+
     }
 
     override fun login(authLoginReq: AuthLoginReq): ResponseEntity<AuthLoginRes?> {
@@ -87,15 +119,6 @@ class UserServiceImpl(
         bufferedWriter.close()
 
         return accessToken
-
-    }
-
-    private fun getKakaoUserIdByKakaoAccessToken(token: String): Int {
-        val element = getJsonElementByAccessToken(token)
-
-        val id = element?.asJsonObject?.get("id")?.asInt ?: 0
-
-        return userRepository.findById(id).get().id
 
     }
 

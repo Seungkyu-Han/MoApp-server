@@ -1,6 +1,7 @@
 package knu.MoApp.data.Dto.Auth.Res
 
 import io.swagger.annotations.ApiModelProperty
+import javax.persistence.Column
 
 data class AuthLoginRes(
     @ApiModelProperty(

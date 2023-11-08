@@ -22,11 +22,11 @@ class AuthController(val userService: UserService) {
 
     @GetMapping("/login")
     @ApiOperation(
-        value = "카카오 로그인 코드를 사용하여 AccessToken을 받아옵니다."
+        value = "카카오 로그인 코드를 사용하여 AccessToken을 받아옵니다\n 만약 가입자가 아니라면 회원가입을 시켜줍니다."
     )
     @ApiResponses(
         ApiResponse(code = 200, message = "로그인 성공"),
-        ApiResponse(code = 401, message = "유저가 아닙니다"),
+        ApiResponse(code = 201, message = "회원가입 되었습니다."),
         ApiResponse(code = 500, message = "카카오 코드 오류")
     )
     fun login(code : String): ResponseEntity<AuthLoginRes?>{
@@ -44,6 +44,5 @@ class AuthController(val userService: UserService) {
     fun login(authLoginReq: AuthLoginReq): ResponseEntity<AuthLoginRes?>{
         return userService.login(authLoginReq)
     }
-
 
 }

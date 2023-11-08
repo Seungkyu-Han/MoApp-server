@@ -13,7 +13,7 @@ data class User(
     @Id
     var id:Int,
 
-    @Column(length = 10)
+    @Column(length = 10, unique = true)
     var name: String,
 
     var accessToken: String
