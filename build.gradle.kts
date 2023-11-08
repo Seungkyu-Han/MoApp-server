@@ -39,8 +39,21 @@ dependencies {
 	implementation("io.swagger:swagger-annotations:1.5.21")
 	implementation("io.swagger:swagger-models:1.5.21")
 
+	//LOMBOK
 	compileOnly("org.projectlombok:lombok")
+
+	//DB
 	runtimeOnly("com.mysql:mysql-connector-j")
+
+	//JWT
+	implementation ("io.jsonwebtoken:jjwt:0.9.1")
+	implementation ("org.springframework.boot:spring-boot-starter-security")
+	implementation ("org.springframework.boot:spring-boot-starter-validation")
+	implementation ("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
+
+	//KAKAO gson
+	implementation ("com.google.code.gson:gson:2.10.1")
+
 	annotationProcessor("org.projectlombok:lombok")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
