@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository
 interface UserRepository:JpaRepository<User, Int> {
 
     fun findByAccessToken(accessToken: String): User?
+
+    fun existsUserByName(name: String): Boolean
 }

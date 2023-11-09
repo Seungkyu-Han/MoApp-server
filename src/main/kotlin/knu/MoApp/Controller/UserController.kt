@@ -5,15 +5,12 @@ import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import knu.MoApp.Service.UserService
-import knu.MoApp.data.Dto.Auth.Res.AuthLoginRes
 import knu.MoApp.data.Dto.User.Req.UserInfoReq
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import springfox.documentation.annotations.ApiIgnore
 
 @RestController
 @RequestMapping("/api/user")
@@ -30,11 +27,20 @@ class UserController(val userService: UserService) {
         ApiResponse(code = 401, message = "유저가 아닙니다."),
         ApiResponse(code = 500, message = "토큰 오류")
     )
-    fun info(userInfoReq: UserInfoReq, authentication: Authentication): ResponseEntity<HttpStatus> {
+    fun info(userInfoReq: UserInfoReq, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus> {
         return userService.info(userInfoReq, authentication)
     }
 
-
+    @GetMapping("/name")
+    @ApiOperation(
+        value = "이름을 중복체크 해줍니다.",
+        notes = "true -> 사용 가능, false -> 사용 불가능"
+    )
+    @ApiResponses(
+    )
+    fun name(@RequestParam name: String): ResponseEntity<Boolean> {
+        return userService.name(name)
+    }
 
 
 }

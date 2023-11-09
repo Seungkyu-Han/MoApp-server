@@ -46,9 +46,9 @@ class UserServiceImpl(
 
         val element = getJsonElementByAccessToken(kakaoAccessToken)
 
-        val id = element?.asJsonObject?.get("id")?.asInt ?: 0
+        val id = element.asJsonObject?.get("id")?.asInt ?: 0
 
-        val optionalUser =  userRepository.findById(element?.asJsonObject?.get("id")?.asInt ?: 0)
+        val optionalUser =  userRepository.findById(element.asJsonObject?.get("id")?.asInt ?: 0)
 
         if(optionalUser.isEmpty)
             return register(id)
@@ -110,6 +110,10 @@ class UserServiceImpl(
         return ResponseEntity(HttpStatus.OK)
     }
 
+    override fun name(name: String): ResponseEntity<Boolean> {
+        return ResponseEntity(!userRepository.existsUserByName(name), HttpStatus.OK)
+    }
+
     private fun getKakaoAccessToken(code: String): String {
         val accessToken:String
 
@@ -139,7 +143,7 @@ class UserServiceImpl(
 
     }
 
-    private fun getJsonElementByAccessToken(token : String): JsonElement? {
+    private fun getJsonElementByAccessToken(token : String): JsonElement {
         val reqUrl = "https://kapi.kakao.com/v2/user/me"
 
         val url = URL(reqUrl)

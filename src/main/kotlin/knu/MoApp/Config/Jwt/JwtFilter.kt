@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse
 @RequiredArgsConstructor
 @Component
 class JwtFilter(
-    @Value("{jwt.secret.key}")
+    @Value("\${jwt.secret.key}")
     val secretKey: String,
     val jwtTokenProvider: JwtTokenProvider
 ):OncePerRequestFilter() {

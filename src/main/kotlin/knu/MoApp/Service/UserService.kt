@@ -15,4 +15,5 @@ interface UserService {
     fun login(authLoginReq: AuthLoginReq): ResponseEntity<AuthLoginRes?>
 
     fun info(userInfoReq: UserInfoReq, authentication: Authentication): ResponseEntity<HttpStatus>
+    fun name(name:String): ResponseEntity<Boolean>
 }
