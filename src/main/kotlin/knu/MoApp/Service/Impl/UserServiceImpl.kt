@@ -7,10 +7,12 @@ import knu.MoApp.Repository.UserRepository
 import knu.MoApp.Service.UserService
 import knu.MoApp.data.Dto.Auth.Req.AuthLoginReq
 import knu.MoApp.data.Dto.Auth.Res.AuthLoginRes
+import knu.MoApp.data.Dto.User.Req.UserInfoReq
 import knu.MoApp.data.Entity.User
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import java.io.BufferedReader
 import java.io.BufferedWriter
@@ -92,6 +94,21 @@ class UserServiceImpl(
         return ResponseEntity(AuthLoginRes(name = user.name, id = user.id, accessToken = authLoginReq.accessToken), HttpStatus.OK)
     }
 
+    override fun info(userInfoReq: UserInfoReq, authentication: Authentication): ResponseEntity<HttpStatus> {
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+
+        if(user.isEmpty) return ResponseEntity(HttpStatus.UNAUTHORIZED)
+
+        user.get().name = userInfoReq.name
+
+        try{
+            userRepository.save(user.get())
+        }catch (e:Exception){
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+        }
+
+        return ResponseEntity(HttpStatus.OK)
+    }
 
     private fun getKakaoAccessToken(code: String): String {
         val accessToken:String

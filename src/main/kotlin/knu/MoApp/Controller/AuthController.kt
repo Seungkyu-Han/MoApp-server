@@ -12,6 +12,7 @@ import knu.MoApp.data.Dto.Auth.Res.AuthLoginRes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -41,7 +42,7 @@ class AuthController(val userService: UserService) {
         ApiResponse(code = 200, message = "로그인 성공"),
         ApiResponse(code = 401, message = "유저가 아닙니다")
     )
-    fun login(authLoginReq: AuthLoginReq): ResponseEntity<AuthLoginRes?>{
+    fun login(@RequestBody authLoginReq: AuthLoginReq): ResponseEntity<AuthLoginRes?>{
         return userService.login(authLoginReq)
     }
 
