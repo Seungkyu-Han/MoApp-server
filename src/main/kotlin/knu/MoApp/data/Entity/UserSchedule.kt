@@ -1,18 +1,16 @@
 package knu.MoApp.data.Entity
 
+import knu.MoApp.data.DayEnum
 import lombok.Data
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.ManyToOne
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name="user_schedule")
 @Data
 data class UserSchedule(
     @Id
-    val id: Int,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int?,
 
     @ManyToOne
     val user: User,
@@ -20,6 +18,9 @@ data class UserSchedule(
     val startTime: Int,
 
     val endTime: Int,
+
+    @Enumerated(EnumType.STRING)
+    val day: DayEnum,
 
     @Column(length = 20)
     val eventName: String
