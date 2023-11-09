@@ -61,7 +61,7 @@ class UserServiceImpl(
     }
 
     private fun register(id: Int): ResponseEntity<AuthLoginRes?> {
-        val user = User( id = id, name = toHashName(id), accessToken = jwtTokenProvider.createAccessToken(id, secretKey))
+        val user = User( id = id, name = toHashName(id), accessToken = jwtTokenProvider.createAccessToken(id, secretKey), scheduleEvents = null )
         userRepository.save(user)
 
         return ResponseEntity(AuthLoginRes(name = user.name, id = user.id, accessToken = user.accessToken), HttpStatus.CREATED)

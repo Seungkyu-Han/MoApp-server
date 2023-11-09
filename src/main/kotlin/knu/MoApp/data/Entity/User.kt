@@ -4,6 +4,8 @@ import lombok.Data
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
+import javax.persistence.OneToMany
+import javax.persistence.OneToOne
 import javax.persistence.Table
 
 @Entity
@@ -16,5 +18,8 @@ data class User(
     @Column(length = 10, unique = true)
     var name: String,
 
-    var accessToken: String
+    var accessToken: String,
+
+    @OneToMany
+    var scheduleEvents: MutableList<ScheduleEvent>?
 )
