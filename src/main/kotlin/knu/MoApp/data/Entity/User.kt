@@ -5,7 +5,6 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.OneToMany
-import javax.persistence.OneToOne
 import javax.persistence.Table
 
 @Entity
@@ -21,5 +20,5 @@ data class User(
     var accessToken: String,
 
     @OneToMany
-    var scheduleEvents: MutableList<ScheduleEvent>?
+    var scheduleEvents: MutableList<UserSchedule>?
 )
