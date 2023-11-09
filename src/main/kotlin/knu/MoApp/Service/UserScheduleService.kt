@@ -12,4 +12,8 @@ interface UserScheduleService {
     fun schedule(authentication: Authentication): ResponseEntity<UserScheduleRes?>
 
     fun schedule(startTime: Int, endTime: Int, day: DayEnum, scheduleName: String, authentication: Authentication): ResponseEntity<HttpStatus>
+
+    fun schedule(id: Int, startTime: Int, endTime: Int, day: DayEnum, scheduleName: String, authentication: Authentication): ResponseEntity<HttpStatus>
+
+    fun schedule(id:Int, authentication: Authentication): ResponseEntity<HttpStatus>
 }

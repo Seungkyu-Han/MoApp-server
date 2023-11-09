@@ -1,11 +1,7 @@
 package knu.MoApp.data.Entity
 
 import lombok.Data
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.OneToMany
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name="user")
@@ -19,6 +15,6 @@ data class User(
 
     var accessToken: String,
 
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     var scheduleEvents: MutableList<UserSchedule>?
 )

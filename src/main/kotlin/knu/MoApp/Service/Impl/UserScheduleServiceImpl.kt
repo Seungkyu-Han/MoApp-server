@@ -57,8 +57,49 @@ class UserScheduleServiceImpl(
 
         userScheduleRepository.save(userSchedule)
 
-        user.get().scheduleEvents?.add(userSchedule)
         userRepository.save(user.get())
         return ResponseEntity(HttpStatus.CREATED)
+    }
+
+    override fun schedule(
+        id: Int,
+        startTime: Int,
+        endTime: Int,
+        day: DayEnum,
+        scheduleName: String,
+        authentication: Authentication
+    ): ResponseEntity<HttpStatus> {
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+        val userSchedule = userScheduleRepository.findById(id)
+
+        if(userSchedule.isEmpty)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        if(user.isEmpty)
+            return ResponseEntity(HttpStatus.UNAUTHORIZED)
+
+        if(userSchedule.get().user != user.get())
+            return ResponseEntity(HttpStatus.FORBIDDEN)
+
+        userSchedule.get().startTime = startTime
+        userSchedule.get().endTime = endTime
+        userSchedule.get().day = day
+        userSchedule.get().eventName = scheduleName
+
+        userScheduleRepository.save(userSchedule.get())
+
+        return ResponseEntity(HttpStatus.OK)
+    }
+
+    override fun schedule(id: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
+
+        val userSchedule = userScheduleRepository.findById(id)
+
+        if(userSchedule.isEmpty)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        userScheduleRepository.delete(userSchedule.get())
+
+        return ResponseEntity(HttpStatus.OK)
     }
 }

@@ -12,16 +12,16 @@ data class UserSchedule(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int?,
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.ALL])
     val user: User,
 
-    val startTime: Int,
+    var startTime: Int,
 
-    val endTime: Int,
+    var endTime: Int,
 
     @Enumerated(EnumType.STRING)
-    val day: DayEnum,
+    var day: DayEnum,
 
     @Column(length = 20)
-    val eventName: String
+    var eventName: String
 )
