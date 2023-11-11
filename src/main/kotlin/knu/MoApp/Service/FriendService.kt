@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service
 
 @Service
 interface FriendService {
-    fun friend(authentication: Authentication): ResponseEntity<ArrayList<FriendRes>?>
-    fun friend(id: Int, authentication: Authentication): ResponseEntity<HttpStatus>
+    fun getFriend(authentication: Authentication): ResponseEntity<ArrayList<FriendRes>?>
+    fun addFriend(id: Int, authentication: Authentication): ResponseEntity<HttpStatus>
+    fun deleteFriend(id: Int, authentication: Authentication): ResponseEntity<HttpStatus>
 }

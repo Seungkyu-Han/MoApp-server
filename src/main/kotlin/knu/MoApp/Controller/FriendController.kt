@@ -22,8 +22,24 @@ class FriendController(private val friendService: FriendService) {
         ApiResponse(code = 200, message = "조회 성공"),
         ApiResponse(code = 401, message = "권한 없음")
     )
-    fun friend(@ApiIgnore authentication: Authentication): ResponseEntity<ArrayList<FriendRes>?> {
-        return friendService.friend(authentication)
+    fun getFriend(@ApiIgnore authentication: Authentication): ResponseEntity<ArrayList<FriendRes>?> {
+        return friendService.getFriend(authentication)
+    }
+
+    @PostMapping("/friend")
+    @ApiOperation(
+        value = "친구를 추가합니다."
+    )
+    @ApiImplicitParams(
+        ApiImplicitParam(name = "id", value = "추가하고 싶은 친구의 id", dataType = "Integer", paramType = "query")
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "조회 성공"),
+        ApiResponse(code = 400, message = "없는 상대방이거나, 해당 친구요청이 없었음"),
+        ApiResponse(code = 401, message = "권한 없음")
+    )
+    fun addFriend(@RequestParam id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus> {
+        return friendService.addFriend(id, authentication)
     }
 
     @DeleteMapping("/friend")
@@ -38,8 +54,8 @@ class FriendController(private val friendService: FriendService) {
         ApiResponse(code = 400, message = "삭제하려는 친구가 존재하지 않거나, 이미 친구관계가 아님"),
         ApiResponse(code = 401, message = "권한 없음")
     )
-    fun friend(@RequestParam id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus> {
-        return friendService.friend(id, authentication)
+    fun deleteFriend(@RequestParam id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus> {
+        return friendService.deleteFriend(id, authentication)
     }
 
 

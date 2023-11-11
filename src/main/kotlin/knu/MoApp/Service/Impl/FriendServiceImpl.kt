@@ -1,10 +1,12 @@
 package knu.MoApp.Service.Impl
 
+import knu.MoApp.Repository.AddFriendRepository
 import knu.MoApp.Repository.FriendRepository
 import knu.MoApp.Repository.UserRepository
 import knu.MoApp.Service.FriendService
 import knu.MoApp.data.Dto.Friend.Res.FriendRes
 import knu.MoApp.data.Entity.Embedded.FriendRelation
+import knu.MoApp.data.Entity.Friend
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
@@ -13,10 +15,11 @@ import org.springframework.stereotype.Service
 @Service
 class FriendServiceImpl(
     private val userRepository: UserRepository,
-    private val friendRepository: FriendRepository
+    private val friendRepository: FriendRepository,
+    private val addFriendRepository: AddFriendRepository
 ): FriendService {
 
-    override fun friend(authentication: Authentication): ResponseEntity<ArrayList<FriendRes>?> {
+    override fun getFriend(authentication: Authentication): ResponseEntity<ArrayList<FriendRes>?> {
         val user = userRepository.findById(Integer.valueOf(authentication.name))
 
         if(user.isEmpty)
@@ -30,7 +33,30 @@ class FriendServiceImpl(
         return ResponseEntity(result, HttpStatus.OK)
     }
 
-    override fun friend(id: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
+    override fun addFriend(id: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
+        val user1 = userRepository.findById(Integer.valueOf(authentication.name))
+        val user2 = userRepository.findById(id)
+
+        if(user1.isEmpty)
+            return ResponseEntity(null, HttpStatus.UNAUTHORIZED)
+
+        if(user2.isEmpty)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        val friendRelation = FriendRelation(user1.get(), user2.get())
+
+        val addFriend = addFriendRepository.findById(friendRelation)
+
+        if(addFriend.isEmpty)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        friendRepository.save(Friend(friendRelation))
+        friendRepository.save(Friend(FriendRelation(user2.get(), user1.get())))
+
+        return ResponseEntity(HttpStatus.OK)
+    }
+
+    override fun deleteFriend(id: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
         val user1 = userRepository.findById(Integer.valueOf(authentication.name))
         val user2 = userRepository.findById(id)
 
