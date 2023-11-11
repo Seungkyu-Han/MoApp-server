@@ -19,10 +19,13 @@ class UserScheduleServiceImpl(
 ): UserScheduleService {
 
     override fun schedule(authentication: Authentication): ResponseEntity<UserScheduleRes?> {
-        val user = userRepository.findUserWithScheduleEvents(Integer.valueOf(authentication.name)) ?: return ResponseEntity(null, HttpStatus.UNAUTHORIZED)
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+
+        if(user.isEmpty)
+            return ResponseEntity(null, HttpStatus.UNAUTHORIZED)
 
         val userScheduleRes = UserScheduleRes()
-        for(userSchedule in userScheduleRepository.findByUser(user))
+        for(userSchedule in userScheduleRepository.findByUser(user.get()))
             userScheduleRes.scheduleEvents.add(UserScheduleResElement(
                 id = userSchedule.id ?: 0,
                 day = userSchedule.day,
