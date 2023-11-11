@@ -9,6 +9,7 @@ import knu.MoApp.data.Dto.Auth.Req.AuthLoginReq
 import knu.MoApp.data.Dto.Auth.Res.AuthLoginRes
 import knu.MoApp.data.Dto.User.Req.UserInfoReq
 import knu.MoApp.data.Entity.User
+import knu.MoApp.data.Entity.UserSchedule
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -61,7 +62,14 @@ class UserServiceImpl(
     }
 
     private fun register(id: Int): ResponseEntity<AuthLoginRes?> {
-        val user = User( id = id, name = toHashName(id), accessToken = jwtTokenProvider.createAccessToken(id, secretKey), scheduleEvents = null )
+        val user = User(
+            id = id,
+            name = toHashName(id),
+            accessToken = jwtTokenProvider.createAccessToken(id, secretKey),
+            scheduleEvents = mutableListOf(),
+            add_friend = true,
+            friends = mutableListOf()
+        )
         userRepository.save(user)
 
         return ResponseEntity(AuthLoginRes(name = user.name, id = user.id, accessToken = user.accessToken), HttpStatus.CREATED)
