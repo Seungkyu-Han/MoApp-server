@@ -11,4 +11,7 @@ interface FriendService {
     fun getFriend(authentication: Authentication): ResponseEntity<ArrayList<FriendRes>?>
     fun addFriend(id: Int, authentication: Authentication): ResponseEntity<HttpStatus>
     fun deleteFriend(id: Int, authentication: Authentication): ResponseEntity<HttpStatus>
+    fun getAddFriend(authentication: Authentication): ResponseEntity<ArrayList<FriendRes>?>
+    fun addAddFriend(name: String, authentication: Authentication): ResponseEntity<HttpStatus>
+    fun deleteAddFriend(id: Int, authentication: Authentication): ResponseEntity<HttpStatus>
 }
