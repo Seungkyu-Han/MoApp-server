@@ -9,7 +9,6 @@ import knu.MoApp.data.Dto.Auth.Req.AuthLoginReq
 import knu.MoApp.data.Dto.Auth.Res.AuthLoginRes
 import knu.MoApp.data.Dto.User.Req.UserInfoReq
 import knu.MoApp.data.Entity.User
-import knu.MoApp.data.Entity.UserSchedule
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -66,9 +65,9 @@ class UserServiceImpl(
             id = id,
             name = toHashName(id),
             accessToken = jwtTokenProvider.createAccessToken(id, secretKey),
-            scheduleEvents = mutableListOf(),
             add_friend = true,
-            friends = mutableListOf()
+            img = null,
+            scheduleEvents = mutableListOf()
         )
         userRepository.save(user)
 

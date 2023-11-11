@@ -17,9 +17,8 @@ data class User(
 
     var add_friend: Boolean,
 
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    var scheduleEvents: MutableList<UserSchedule>?,
+    var img:String?,
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    var friends: MutableList<Friend>?
+    var scheduleEvents: MutableList<UserSchedule>?
 )
