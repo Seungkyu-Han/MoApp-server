@@ -11,9 +11,6 @@ interface UserRepository:JpaRepository<User, Int> {
 
     fun findByAccessToken(accessToken: String): User?
 
-    @Query("SELECT u FROM User u JOIN FETCH u.scheduleEvents WHERE u.id = :id")
-    fun findUserWithScheduleEvents(id: Int): User?
-
 
     fun existsUserByName(name: String): Boolean
 }

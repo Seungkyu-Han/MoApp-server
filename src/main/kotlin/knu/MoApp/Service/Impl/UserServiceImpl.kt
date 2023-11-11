@@ -66,8 +66,7 @@ class UserServiceImpl(
             name = toHashName(id),
             accessToken = jwtTokenProvider.createAccessToken(id, secretKey),
             add_friend = true,
-            img = null,
-            scheduleEvents = mutableListOf()
+            img = null
         )
         userRepository.save(user)
 
