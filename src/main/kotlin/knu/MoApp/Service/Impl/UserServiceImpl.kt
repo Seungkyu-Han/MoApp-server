@@ -8,6 +8,7 @@ import knu.MoApp.Service.UserService
 import knu.MoApp.data.Dto.Auth.Req.AuthLoginReq
 import knu.MoApp.data.Dto.Auth.Res.AuthLoginRes
 import knu.MoApp.data.Dto.User.Req.UserInfoReq
+import knu.MoApp.data.Dto.User.Res.UserInfoRes
 import knu.MoApp.data.Entity.User
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
@@ -105,6 +106,14 @@ class UserServiceImpl(
         return ResponseEntity(AuthLoginRes(name = user.name, id = user.id, accessToken = authLoginReq.accessToken), HttpStatus.OK)
     }
 
+    override fun check(authentication: Authentication): ResponseEntity<HttpStatus> {
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+        return if(user.isEmpty)
+            ResponseEntity(HttpStatus.UNAUTHORIZED)
+        else
+            ResponseEntity(HttpStatus.OK)
+    }
+
     override fun info(userInfoReq: UserInfoReq, authentication: Authentication): ResponseEntity<HttpStatus> {
         val user = userRepository.findById(Integer.valueOf(authentication.name))
 
@@ -119,6 +128,14 @@ class UserServiceImpl(
         }
 
         return ResponseEntity(HttpStatus.OK)
+    }
+
+    override fun info(authentication: Authentication): ResponseEntity<UserInfoRes> {
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+
+        if(user.isEmpty) return ResponseEntity(HttpStatus.FORBIDDEN)
+
+        return ResponseEntity(UserInfoRes(user.get()), HttpStatus.OK)
     }
 
     override fun name(name: String): ResponseEntity<Boolean> {

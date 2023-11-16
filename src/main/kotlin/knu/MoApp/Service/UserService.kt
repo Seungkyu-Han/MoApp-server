@@ -3,6 +3,7 @@ package knu.MoApp.Service
 import knu.MoApp.data.Dto.Auth.Req.AuthLoginReq
 import knu.MoApp.data.Dto.Auth.Res.AuthLoginRes
 import knu.MoApp.data.Dto.User.Req.UserInfoReq
+import knu.MoApp.data.Dto.User.Res.UserInfoRes
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
@@ -16,4 +17,6 @@ interface UserService {
     fun loginKakaoAccess(token: String): ResponseEntity<AuthLoginRes?>
     fun info(userInfoReq: UserInfoReq, authentication: Authentication): ResponseEntity<HttpStatus>
     fun name(name:String): ResponseEntity<Boolean>
+    fun check(authentication: Authentication): ResponseEntity<HttpStatus>
+    fun info(authentication: Authentication): ResponseEntity<UserInfoRes>
 }

@@ -4,17 +4,18 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
-import io.swagger.v3.oas.annotations.tags.Tag
-import io.swagger.v3.oas.annotations.tags.Tags
 import knu.MoApp.Service.UserService
 import knu.MoApp.data.Dto.Auth.Req.AuthLoginReq
 import knu.MoApp.data.Dto.Auth.Res.AuthLoginRes
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import springfox.documentation.annotations.ApiIgnore
 
 @RestController
 @RequestMapping("/api/auth")
@@ -57,6 +58,17 @@ class AuthController(val userService: UserService) {
     )
     fun loginKakaoAccess(token : String): ResponseEntity<AuthLoginRes?>{
         return userService.loginKakaoAccess(token)
+    }
+
+    @GetMapping("/check")
+    @ApiOperation(
+        value = "앱 자체의 accessToken을 사용하여 회원이 맞는 지 체크합니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "성공, 외에는 모두 에러")
+    )
+    fun check(@ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
+        return userService.check(authentication)
     }
 
 }
