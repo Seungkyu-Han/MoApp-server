@@ -46,4 +46,17 @@ class AuthController(val userService: UserService) {
         return userService.login(authLoginReq)
     }
 
+    @GetMapping("/login-kakaoAccess")
+    @ApiOperation(
+        value = "카카오 AccessToken을 사용하여 앱 자체의 AccessToken을 받아옵니다\n 만약 가입자가 아니라면 회원가입을 시켜줍니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "로그인 성공"),
+        ApiResponse(code = 201, message = "회원가입 되었습니다."),
+        ApiResponse(code = 500, message = "카카오 코드 오류")
+    )
+    fun loginKakaoAccess(token : String): ResponseEntity<AuthLoginRes?>{
+        return userService.loginKakaoAccess(token)
+    }
+
 }

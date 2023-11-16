@@ -44,7 +44,12 @@ class UserServiceImpl(
     override fun login(code: String): ResponseEntity<AuthLoginRes?> {
         val kakaoAccessToken = getKakaoAccessToken(code)
 
-        val element = getJsonElementByAccessToken(kakaoAccessToken)
+        return loginKakaoAccess(kakaoAccessToken)
+    }
+
+    override fun loginKakaoAccess(token: String): ResponseEntity<AuthLoginRes?> {
+
+        val element = getJsonElementByAccessToken(token)
 
         val id = element.asJsonObject?.get("id")?.asInt ?: 0
 

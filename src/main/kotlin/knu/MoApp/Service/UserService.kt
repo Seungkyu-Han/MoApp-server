@@ -13,7 +13,7 @@ interface UserService {
     fun login(code: String): ResponseEntity<AuthLoginRes?>
 
     fun login(authLoginReq: AuthLoginReq): ResponseEntity<AuthLoginRes?>
-
+    fun loginKakaoAccess(token: String): ResponseEntity<AuthLoginRes?>
     fun info(userInfoReq: UserInfoReq, authentication: Authentication): ResponseEntity<HttpStatus>
     fun name(name:String): ResponseEntity<Boolean>
 }
