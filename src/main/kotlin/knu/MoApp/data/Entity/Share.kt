@@ -10,7 +10,7 @@ import javax.persistence.*
 data class Share(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
+    val id: Int?,
 
     @Column(length = 20)
     var name: String,
