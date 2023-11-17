@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import knu.MoApp.Service.UserScheduleService
-import knu.MoApp.data.DayEnum
+import knu.MoApp.data.Enum.DayEnum
 import knu.MoApp.data.Dto.UserSchedule.UserScheduleRes
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -40,7 +40,7 @@ class UserScheduleController(private val userScheduleService: UserScheduleServic
         ApiResponse(code = 401, message = "권한 없음"),
         ApiResponse(code = 404, message = "해당 시간 불가능")
     )
-    fun schedule(startTime: Int, endTime: Int, day: DayEnum, scheduleName: String ,@ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus> {
+    fun schedule(startTime: Int, endTime: Int, day: DayEnum, scheduleName: String, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus> {
         return userScheduleService.schedule(startTime, endTime, day, scheduleName, authentication)
     }
 

@@ -1,6 +1,6 @@
 package knu.MoApp.Service
 
-import knu.MoApp.data.DayEnum
+import knu.MoApp.data.Enum.DayEnum
 import knu.MoApp.data.Dto.UserSchedule.UserScheduleRes
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

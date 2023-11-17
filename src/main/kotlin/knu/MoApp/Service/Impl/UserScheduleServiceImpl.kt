@@ -3,7 +3,7 @@ package knu.MoApp.Service.Impl
 import knu.MoApp.Repository.UserRepository
 import knu.MoApp.Repository.UserScheduleRepository
 import knu.MoApp.Service.UserScheduleService
-import knu.MoApp.data.DayEnum
+import knu.MoApp.data.Enum.DayEnum
 import knu.MoApp.data.Dto.UserSchedule.UserScheduleRes
 import knu.MoApp.data.Dto.UserSchedule.UserScheduleResElement
 import knu.MoApp.data.Entity.UserSchedule

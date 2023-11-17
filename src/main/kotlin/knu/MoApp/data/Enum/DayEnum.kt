@@ -1,4 +1,4 @@
-package knu.MoApp.data
+package knu.MoApp.data.Enum
 
 enum class DayEnum {
     Monday,

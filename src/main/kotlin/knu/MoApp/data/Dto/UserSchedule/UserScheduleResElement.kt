@@ -1,6 +1,6 @@
 package knu.MoApp.data.Dto.UserSchedule
 
-import knu.MoApp.data.DayEnum
+import knu.MoApp.data.Enum.DayEnum
 
 data class UserScheduleResElement(
     val id: Int,

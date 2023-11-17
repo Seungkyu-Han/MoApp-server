@@ -1,6 +1,6 @@
 package knu.MoApp.Repository
 
-import knu.MoApp.data.DayEnum
+import knu.MoApp.data.Enum.DayEnum
 import knu.MoApp.data.Entity.User
 import knu.MoApp.data.Entity.UserSchedule
 import org.springframework.data.jpa.repository.JpaRepository

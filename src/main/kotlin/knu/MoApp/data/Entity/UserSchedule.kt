@@ -1,6 +1,6 @@
 package knu.MoApp.data.Entity
 
-import knu.MoApp.data.DayEnum
+import knu.MoApp.data.Enum.DayEnum
 import lombok.Data
 import javax.persistence.*
 
