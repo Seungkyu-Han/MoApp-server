@@ -55,6 +55,16 @@ class UserController(val userService: UserService) {
         return userService.name(name)
     }
 
+    @GetMapping("/add-friend")
+    @ApiOperation(
+        value = "친구 요청 ON/OFF 정보를 가져옵니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "조회 성공")
+    )
+    fun addFriend(@ApiIgnore authentication: Authentication): ResponseEntity<Boolean>{
+        return userService.addFriend(authentication)
+    }
 
 
 }

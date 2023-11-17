@@ -19,4 +19,5 @@ interface UserService {
     fun name(name:String): ResponseEntity<Boolean>
     fun check(authentication: Authentication): ResponseEntity<HttpStatus>
     fun info(authentication: Authentication): ResponseEntity<UserInfoRes>
+    fun addFriend(authentication: Authentication): ResponseEntity<Boolean>
 }
