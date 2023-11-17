@@ -5,15 +5,15 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "user_schedule_in_group")
+@Table(name = "user_schedule_in_share")
 @Data
-data class UserScheduleInGroup(
+data class UserScheduleInShare(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int?,
 
     @ManyToOne
-    val groupUser: GroupUser,
+    val shareUser: ShareUser,
 
     var startTime: Int,
     var endTime: Int,

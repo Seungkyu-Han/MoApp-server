@@ -1,6 +1,6 @@
 package knu.MoApp.data.Enum
 
-enum class GroupScheduleStatusEnum {
+enum class ShareScheduleStatusEnum {
 
     Inactive,
     Req,

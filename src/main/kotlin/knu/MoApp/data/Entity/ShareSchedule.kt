@@ -1,23 +1,23 @@
 package knu.MoApp.data.Entity
 
-import knu.MoApp.data.Enum.GroupScheduleStatusEnum
+import knu.MoApp.data.Enum.ShareScheduleStatusEnum
 import java.util.Date
 import javax.persistence.*
 
 @Entity
-@Table(name = "group_schedule")
-data class GroupSchedule(
+@Table(name = "share_schedule")
+data class ShareSchedule(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int?,
 
     @OneToOne
-    val group: Group,
+    val share: Share,
 
     var startTime: Int,
     var endTime: Int,
     var date: Date,
 
     @Enumerated(EnumType.ORDINAL)
-    var groupScheduleStatusEnum: GroupScheduleStatusEnum
+    var shareScheduleStatusEnum: ShareScheduleStatusEnum
 )

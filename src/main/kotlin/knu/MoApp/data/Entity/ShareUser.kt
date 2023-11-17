@@ -1,15 +1,15 @@
 package knu.MoApp.data.Entity
 
-import knu.MoApp.data.Entity.Embedded.GroupUserRelation
+import knu.MoApp.data.Entity.Embedded.ShareUserRelation
 import lombok.Data
 import javax.persistence.EmbeddedId
 import javax.persistence.Entity
 import javax.persistence.Table
 
 @Entity
-@Table(name="group_user")
+@Table(name="share_user")
 @Data
-data class GroupUser(
+data class ShareUser(
     @EmbeddedId
-    val groupUserRelation: GroupUserRelation
+    val shareUserRelation: ShareUserRelation
 )
