@@ -1,9 +1,6 @@
 package knu.MoApp.Controller
 
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
-import io.swagger.annotations.ApiResponse
-import io.swagger.annotations.ApiResponses
+import io.swagger.annotations.*
 import knu.MoApp.Service.GroupService
 import knu.MoApp.data.Dto.Group.Req.GroupPatchReq
 import knu.MoApp.data.Dto.Group.Req.GroupPostReq
@@ -11,12 +8,7 @@ import knu.MoApp.data.Dto.Group.Res.GroupRes
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import springfox.documentation.annotations.ApiIgnore
 
 @RestController
@@ -53,9 +45,24 @@ class GroupController(private val groupService: GroupService) {
         value = "공유방 정보를 수정합니다."
     )
     @ApiResponses(
-        ApiResponse(code = 200, message = "변경 성공")
+        ApiResponse(code = 200, message = "변경 성공"),
+        ApiResponse(code = 403, message = "권한 없음")
     )
     fun group(@RequestBody groupPatchReq: GroupPatchReq, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
         return groupService.group(groupPatchReq, authentication)
+    }
+
+    @DeleteMapping("/group")
+    @ApiOperation(
+        value = "공유방에서 탈퇴합니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "탈퇴 성공")
+    )
+    @ApiImplicitParams(
+        ApiImplicitParam(name = "id", value = "탈퇴하려는 공유방의 ID", dataType = "Integer", paramType = "query")
+    )
+    fun group(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
+        return groupService.group(id, authentication)
     }
 }

@@ -13,4 +13,5 @@ interface GroupService {
     fun group(authentication: Authentication): ResponseEntity<ArrayList<GroupRes>>
     fun group(groupPostReq: GroupPostReq, authentication: Authentication): ResponseEntity<HttpStatus>
     fun group(groupPatchReq: GroupPatchReq, authentication: Authentication): ResponseEntity<HttpStatus>
+    fun group(id: Int, authentication: Authentication): ResponseEntity<HttpStatus>
 }

@@ -103,4 +103,30 @@ class GroupServiceImpl(
 
         return ResponseEntity(HttpStatus.OK)
     }
+
+    override fun group(id: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+
+        if(user.isEmpty)
+            return ResponseEntity(null, HttpStatus.FORBIDDEN)
+
+        val share = shareRepository.findById(id)
+
+        if(share.isEmpty)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        val shareUser = shareUserRepository.findById(ShareUserRelation(user = user.get(), share = share.get()))
+
+        if(shareUser.isEmpty)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        shareUserRepository.delete(shareUser.get())
+
+        //만약에 0명이면 아예 삭제하기
+
+        if(!shareUserRepository.existsByShareUserRelationShare(share.get()))
+            shareRepository.delete(share.get())
+
+        return ResponseEntity(HttpStatus.OK)
+    }
 }

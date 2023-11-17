@@ -22,4 +22,7 @@ interface ShareUserRepository: JpaRepository<ShareUser, ShareUserRelation> {
                 "WHERE su.shareUserRelation.share = :share"
     )
     fun findUserByGroup(share: Share): List<User>
+
+
+    fun existsByShareUserRelationShare(share: Share): Boolean
 }
