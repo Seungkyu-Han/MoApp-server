@@ -56,6 +56,9 @@ class GroupServiceImpl(
         if(user.isEmpty)
             return ResponseEntity(null, HttpStatus.FORBIDDEN)
 
+        if(groupPostReq.endDate < groupPostReq.startDate)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
         val share = Share(
             id = null,
             name = groupPostReq.name,
