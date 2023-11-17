@@ -1,9 +1,6 @@
 package knu.MoApp.Controller
 
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
-import io.swagger.annotations.ApiResponse
-import io.swagger.annotations.ApiResponses
+import io.swagger.annotations.*
 import knu.MoApp.Service.UserService
 import knu.MoApp.data.Dto.User.Req.UserInfoReq
 import knu.MoApp.data.Dto.User.Res.UserInfoRes
@@ -66,5 +63,17 @@ class UserController(val userService: UserService) {
         return userService.addFriend(authentication)
     }
 
-
+    @PutMapping("/add-friend")
+    @ApiOperation(
+        value = "친구 요청 정보를 수정합니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "변경 성공")
+    )
+    @ApiImplicitParams(
+        ApiImplicitParam(name = "state", value = "친구 요청 상태", dataType = "Boolean", paramType = "query")
+    )
+    fun addFriend(state: Boolean, @ApiIgnore authentication: Authentication):ResponseEntity<HttpStatus>{
+        return userService.addFriend(state, authentication)
+    }
 }

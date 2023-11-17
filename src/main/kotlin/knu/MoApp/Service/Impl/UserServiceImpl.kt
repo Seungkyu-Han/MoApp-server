@@ -150,6 +150,18 @@ class UserServiceImpl(
         return ResponseEntity(user.get().add_friend, HttpStatus.OK)
     }
 
+    override fun addFriend(state: Boolean, authentication: Authentication): ResponseEntity<HttpStatus> {
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+
+        if(user.isEmpty) return ResponseEntity(HttpStatus.FORBIDDEN)
+
+        user.get().add_friend = state
+
+        userRepository.save(user.get())
+
+        return ResponseEntity(HttpStatus.OK)
+    }
+
     private fun getKakaoAccessToken(code: String): String {
         val accessToken:String
 
