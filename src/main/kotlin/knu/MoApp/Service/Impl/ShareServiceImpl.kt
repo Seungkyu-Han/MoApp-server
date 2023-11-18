@@ -35,7 +35,7 @@ class ShareServiceImpl(
         val shareList = shareUserRepository.findShareByUser(user.get())
 
         for(share in shareList){
-            val userList = shareUserRepository.findUserByGroup(share)
+            val userList = shareUserRepository.findUserByShare(share)
             val userInfoList = ArrayList<UserInfoRes>()
             for(userInGroup in userList)
                 userInfoList.add(UserInfoRes(userInGroup))

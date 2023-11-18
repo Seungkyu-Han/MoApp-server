@@ -18,4 +18,6 @@ interface UserScheduleRepository: JpaRepository<UserSchedule, Int> {
     fun hasTimeConflict(startTime: Int, endTime: Int, day: DayEnum, user: User): Int
 
     fun findByUser(user: User): List<UserSchedule>
+
+    fun findByUserAndDay(user: User, dayEnum: DayEnum): List<UserSchedule>
 }

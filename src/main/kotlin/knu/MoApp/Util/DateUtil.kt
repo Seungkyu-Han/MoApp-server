@@ -15,3 +15,22 @@ fun getDayEnumFromDate(localDate: LocalDate): DayEnum{
         else -> DayEnum.Sunday
     }
 }
+
+fun getDayEnumList(startDayEnum: DayEnum, endDayEnum: DayEnum): MutableList<DayEnum>{
+    val result = mutableListOf<DayEnum>()
+    val dayEnumList = DayEnum.values().toList()
+    if(startDayEnum > endDayEnum){
+        for(dayEnum in dayEnumList)
+            if(dayEnum >= startDayEnum)
+                result.add(dayEnum)
+        for(dayEnum in dayEnumList)
+            if(dayEnum <= endDayEnum)
+                result.add(dayEnum)
+    }
+    else{
+        for(dayEnum in dayEnumList)
+            if(dayEnum in startDayEnum..endDayEnum)
+                result.add(dayEnum)
+    }
+    return result
+}
