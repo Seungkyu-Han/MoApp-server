@@ -16,6 +16,7 @@ data class User(
     var accessToken: String,
 
     var add_friend: Boolean,
+    var add_share: Boolean,
 
     var img:String?
 )

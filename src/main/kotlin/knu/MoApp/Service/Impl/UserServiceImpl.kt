@@ -72,7 +72,8 @@ class UserServiceImpl(
             name = toHashName(id),
             accessToken = jwtTokenProvider.createAccessToken(id, secretKey),
             add_friend = true,
-            img = null
+            img = null,
+            add_share = true
         )
         userRepository.save(user)
 
@@ -156,6 +157,25 @@ class UserServiceImpl(
         if(user.isEmpty) return ResponseEntity(HttpStatus.FORBIDDEN)
 
         user.get().add_friend = state
+
+        userRepository.save(user.get())
+
+        return ResponseEntity(HttpStatus.OK)
+    }
+
+    override fun addShare(authentication: Authentication): ResponseEntity<Boolean> {
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+        if(user.isEmpty) return ResponseEntity(HttpStatus.FORBIDDEN)
+
+        return ResponseEntity(user.get().add_share, HttpStatus.OK)
+    }
+
+    override fun addShare(state: Boolean, authentication: Authentication): ResponseEntity<HttpStatus> {
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+
+        if(user.isEmpty) return ResponseEntity(HttpStatus.FORBIDDEN)
+
+        user.get().add_share = state
 
         userRepository.save(user.get())
 

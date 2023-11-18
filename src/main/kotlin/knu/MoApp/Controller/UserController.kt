@@ -76,4 +76,29 @@ class UserController(val userService: UserService) {
     fun addFriend(state: Boolean, @ApiIgnore authentication: Authentication):ResponseEntity<HttpStatus>{
         return userService.addFriend(state, authentication)
     }
+
+    @GetMapping("/add-share")
+    @ApiOperation(
+        value = "일정 공유 요청 ON/OFF 정보를 가져옵니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "조회 성공")
+    )
+    fun addShare(@ApiIgnore authentication: Authentication): ResponseEntity<Boolean>{
+        return userService.addShare(authentication)
+    }
+
+    @PutMapping("/add-share")
+    @ApiOperation(
+        value = "일정 공유 요청 정보를 수정합니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "변경 성공")
+    )
+    @ApiImplicitParams(
+        ApiImplicitParam(name = "state", value = "친구 요청 상태", dataType = "Boolean", paramType = "query")
+    )
+    fun addShare(state: Boolean, @ApiIgnore authentication: Authentication):ResponseEntity<HttpStatus>{
+        return userService.addShare(state, authentication)
+    }
 }
