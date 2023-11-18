@@ -1,8 +1,8 @@
-package knu.MoApp.data.Dto.Group.Req
+package knu.MoApp.data.Dto.Share.Req
 
 import java.time.LocalDate
 
-data class GroupPatchReq(
+data class SharePatchReq(
     val id: Int,
     val name: String?,
     val startDate: LocalDate?,

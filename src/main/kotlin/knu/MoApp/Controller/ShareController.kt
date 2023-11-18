@@ -1,10 +1,10 @@
 package knu.MoApp.Controller
 
 import io.swagger.annotations.*
-import knu.MoApp.Service.GroupService
-import knu.MoApp.data.Dto.Group.Req.GroupPatchReq
-import knu.MoApp.data.Dto.Group.Req.GroupPostReq
-import knu.MoApp.data.Dto.Group.Res.GroupRes
+import knu.MoApp.Service.ShareService
+import knu.MoApp.data.Dto.Share.Req.SharePatchReq
+import knu.MoApp.data.Dto.Share.Req.SharePostReq
+import knu.MoApp.data.Dto.Share.Res.ShareRes
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
@@ -14,7 +14,7 @@ import springfox.documentation.annotations.ApiIgnore
 @RestController
 @RequestMapping("/api/share")
 @Api(description = "공유방 관련 API")
-class GroupController(private val groupService: GroupService) {
+class ShareController(private val shareService: ShareService) {
 
     @GetMapping("/share")
     @ApiOperation(
@@ -24,8 +24,8 @@ class GroupController(private val groupService: GroupService) {
         ApiResponse(code = 200, message = "조회 성공"),
         ApiResponse(code = 403, message = "권한 없음")
     )
-    fun group(@ApiIgnore authentication: Authentication): ResponseEntity<ArrayList<GroupRes>>{
-        return groupService.group(authentication)
+    fun group(@ApiIgnore authentication: Authentication): ResponseEntity<ArrayList<ShareRes>>{
+        return shareService.share(authentication)
     }
 
     @PostMapping("/share")
@@ -36,8 +36,8 @@ class GroupController(private val groupService: GroupService) {
         ApiResponse(code = 200, message = "조회 성공"),
         ApiResponse(code = 403, message = "권한 없음")
     )
-    fun group(@RequestBody groupPostReq: GroupPostReq, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
-        return groupService.group(groupPostReq, authentication)
+    fun group(@RequestBody groupPostReq: SharePostReq, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
+        return shareService.share(groupPostReq, authentication)
     }
 
     @PatchMapping("/share")
@@ -48,8 +48,8 @@ class GroupController(private val groupService: GroupService) {
         ApiResponse(code = 200, message = "변경 성공"),
         ApiResponse(code = 403, message = "권한 없음")
     )
-    fun group(@RequestBody groupPatchReq: GroupPatchReq, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
-        return groupService.group(groupPatchReq, authentication)
+    fun group(@RequestBody groupPatchReq: SharePatchReq, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
+        return shareService.share(groupPatchReq, authentication)
     }
 
     @DeleteMapping("/share")
@@ -63,6 +63,6 @@ class GroupController(private val groupService: GroupService) {
         ApiImplicitParam(name = "id", value = "탈퇴하려는 공유방의 ID", dataType = "Integer", paramType = "query")
     )
     fun group(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
-        return groupService.group(id, authentication)
+        return shareService.share(id, authentication)
     }
 }
