@@ -4,5 +4,6 @@ enum class ShareScheduleStatusEnum {
 
     Inactive,
     Req,
-    Active
+    Active,
+    Broken
 }

@@ -33,7 +33,7 @@ class ShareScheduleServiceImpl(
 
         val shareUserList = shareUserRepository.findUserByShare(share.get())
 
-        val dayDiff = ChronoUnit.DAYS.between(share.get().endDate, share.get().startDate)
+        val dayDiff = ChronoUnit.DAYS.between(share.get().startDate, share.get().endDate)
 
         val dayOfWeek = getDayEnumList(getDayEnumFromDate(share.get().startDate), getDayEnumFromDate(share.get().endDate))
 
@@ -90,5 +90,42 @@ class ShareScheduleServiceImpl(
         shareScheduleReqRepository.save(ShareScheduleReq(ShareUserRelation(user.get(), share.get()), available = true))
 
         return ResponseEntity(HttpStatus.CREATED)
+    }
+
+    override fun state(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleStatusEnum> {
+
+        val share = shareRepository.findById(id)
+
+        if(share.isEmpty)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        return ResponseEntity(shareScheduleRepository.findByShare(share.get()).shareScheduleStatusEnum, HttpStatus.OK)
+    }
+
+    override fun scheduleReq(id: Int, available: Boolean, authentication: Authentication): ResponseEntity<HttpStatus> {
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+        val share = shareRepository.findById(id)
+
+        val shareScheduleReqList = shareScheduleReqRepository.findByShareUserRelationShare(share.get())
+
+        if(available){
+            shareScheduleReqRepository.save(ShareScheduleReq(ShareUserRelation(user.get(), share.get()), true))
+            for(shareSchedule in shareScheduleReqList){
+                if(!shareSchedule.available) return ResponseEntity(HttpStatus.CREATED)
+            }
+            val shareSchedule = shareScheduleRepository.findByShare(share.get())
+            shareSchedule.shareScheduleStatusEnum = ShareScheduleStatusEnum.Active
+            shareScheduleRepository.save(shareSchedule)
+            return ResponseEntity(HttpStatus.CREATED)
+        }
+        else{
+            val shareSchedule = shareScheduleRepository.findByShare(share.get())
+            shareSchedule.shareScheduleStatusEnum = ShareScheduleStatusEnum.Broken
+            shareScheduleRepository.save(shareSchedule)
+            for(shareScheduleReq in shareScheduleReqList)
+                shareScheduleReq.available = false
+            shareScheduleReqRepository.saveAll(shareScheduleReqList)
+            return ResponseEntity(HttpStatus.OK)
+        }
     }
 }
