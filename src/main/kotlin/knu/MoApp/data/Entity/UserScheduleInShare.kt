@@ -1,7 +1,7 @@
 package knu.MoApp.data.Entity
 
 import lombok.Data
-import java.util.*
+import java.time.LocalDate
 import javax.persistence.*
 
 @Entity
@@ -17,5 +17,5 @@ data class UserScheduleInShare(
 
     var startTime: Int,
     var endTime: Int,
-    var date: Date
+    var date: LocalDate
 )

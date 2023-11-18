@@ -1,12 +1,13 @@
 package knu.MoApp.Service.Impl
 
-import knu.MoApp.Repository.UserRepository
-import knu.MoApp.Repository.UserScheduleRepository
+import knu.MoApp.Repository.*
 import knu.MoApp.Service.UserScheduleService
+import knu.MoApp.Util.getDayEnumFromDate
 import knu.MoApp.data.Enum.DayEnum
 import knu.MoApp.data.Dto.UserSchedule.UserScheduleRes
 import knu.MoApp.data.Dto.UserSchedule.UserScheduleResElement
 import knu.MoApp.data.Entity.UserSchedule
+import knu.MoApp.data.Enum.ShareScheduleStatusEnum
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service
 class UserScheduleServiceImpl(
     val userRepository: UserRepository,
     val userScheduleRepository: UserScheduleRepository,
+    val shareScheduleRepository: ShareScheduleRepository
 ): UserScheduleService {
 
     override fun schedule(authentication: Authentication): ResponseEntity<UserScheduleRes?> {
@@ -104,5 +106,25 @@ class UserScheduleServiceImpl(
         userScheduleRepository.delete(userSchedule.get())
 
         return ResponseEntity(HttpStatus.OK)
+    }
+
+    override fun shareSchedule(authentication: Authentication): ResponseEntity<UserScheduleRes> {
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+
+        if(user.isEmpty)
+            return ResponseEntity(HttpStatus.UNAUTHORIZED)
+
+        val userScheduleRes = UserScheduleRes()
+
+        for(shareSchedule in shareScheduleRepository.findFixShareScheduleByUser(user.get(), ShareScheduleStatusEnum.Active))
+            userScheduleRes.scheduleEvents.add(UserScheduleResElement(
+                id = shareSchedule.id ?: 0,
+                day = getDayEnumFromDate(shareSchedule.date),
+                startTime = shareSchedule.startTime,
+                endTime =  shareSchedule.endTime,
+                eventName = shareSchedule.share.name
+            ))
+
+        return ResponseEntity(userScheduleRes, HttpStatus.OK)
     }
 }

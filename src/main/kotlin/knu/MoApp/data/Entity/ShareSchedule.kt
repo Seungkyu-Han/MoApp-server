@@ -1,7 +1,7 @@
 package knu.MoApp.data.Entity
 
 import knu.MoApp.data.Enum.ShareScheduleStatusEnum
-import java.util.Date
+import java.time.LocalDate
 import javax.persistence.*
 
 @Entity
@@ -16,7 +16,7 @@ data class ShareSchedule(
 
     var startTime: Int,
     var endTime: Int,
-    var date: Date,
+    var date: LocalDate,
 
     @Enumerated(EnumType.ORDINAL)
     var shareScheduleStatusEnum: ShareScheduleStatusEnum

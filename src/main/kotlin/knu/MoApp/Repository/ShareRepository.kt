@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ShareRepository:JpaRepository<Share, Int> {
 
-
 }

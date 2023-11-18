@@ -69,4 +69,16 @@ class UserScheduleController(private val userScheduleService: UserScheduleServic
     fun schedule(id: Int ,@ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus> {
         return userScheduleService.schedule(id, authentication)
     }
+
+    @GetMapping("/share-schedule")
+    @ApiOperation(
+        value = "사용자의 공유 스케줄 정보를 가져옵니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "조회 성공")
+    )
+    fun shareSchedule(@ApiIgnore authentication: Authentication): ResponseEntity<UserScheduleRes>{
+        return userScheduleService.shareSchedule(authentication)
+    }
+
 }
