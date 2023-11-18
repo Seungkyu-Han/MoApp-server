@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*
 import springfox.documentation.annotations.ApiIgnore
 
 @RestController
-@RequestMapping("/api/group")
+@RequestMapping("/api/share")
 @Api(description = "공유방 관련 API")
 class GroupController(private val groupService: GroupService) {
 
-    @GetMapping("/group")
+    @GetMapping("/share")
     @ApiOperation(
         value = "본인이 속한 그룹들의 정보를 가져옵니다."
     )
@@ -28,7 +28,7 @@ class GroupController(private val groupService: GroupService) {
         return groupService.group(authentication)
     }
 
-    @PostMapping("/group")
+    @PostMapping("/share")
     @ApiOperation(
         value = "공유방을 생성합니다."
     )
@@ -40,7 +40,7 @@ class GroupController(private val groupService: GroupService) {
         return groupService.group(groupPostReq, authentication)
     }
 
-    @PatchMapping("/group")
+    @PatchMapping("/share")
     @ApiOperation(
         value = "공유방 정보를 수정합니다."
     )
@@ -52,7 +52,7 @@ class GroupController(private val groupService: GroupService) {
         return groupService.group(groupPatchReq, authentication)
     }
 
-    @DeleteMapping("/group")
+    @DeleteMapping("/share")
     @ApiOperation(
         value = "공유방에서 탈퇴합니다."
     )
