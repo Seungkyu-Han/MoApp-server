@@ -1,5 +1,6 @@
 package knu.MoApp.Repository
 
+import knu.MoApp.data.Entity.Share
 import knu.MoApp.data.Entity.ShareSchedule
 import knu.MoApp.data.Entity.User
 import knu.MoApp.data.Enum.ShareScheduleStatusEnum
@@ -27,4 +28,6 @@ interface ShareScheduleRepository: JpaRepository<ShareSchedule, Int> {
                 "AND ss.date = :date"
     )
     fun findFixShareScheduleByUserAndDate(user: User, status: ShareScheduleStatusEnum, date: LocalDate): List<ShareSchedule>
+
+    fun findByShare(share: Share):ShareSchedule
 }

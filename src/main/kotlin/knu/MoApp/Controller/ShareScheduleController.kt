@@ -5,11 +5,11 @@ import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import knu.MoApp.Service.ShareScheduleService
+import knu.MoApp.data.Dto.ShareSchedule.Req.ShareSchedulePostReq
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import springfox.documentation.annotations.ApiIgnore
 
 @RestController
@@ -26,6 +26,17 @@ class ShareScheduleController(private val shareScheduleService: ShareScheduleSer
     )
     fun schedule(id: Int, @ApiIgnore authentication: Authentication):ResponseEntity<Array<BooleanArray>>{
         return shareScheduleService.schedule(id, authentication)
+    }
+
+    @PostMapping("/schedule")
+    @ApiOperation(
+        value = "해당 그룹에 미팅을 요청합니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 201, message = "생성 성공")
+    )
+    fun schedule(@RequestBody shareSchedulePostReq: ShareSchedulePostReq, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
+        return shareScheduleService.schedule(shareSchedulePostReq, authentication)
     }
 
 }

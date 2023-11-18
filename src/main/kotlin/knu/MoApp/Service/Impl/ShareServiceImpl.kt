@@ -1,8 +1,6 @@
 package knu.MoApp.Service.Impl
 
-import knu.MoApp.Repository.ShareRepository
-import knu.MoApp.Repository.ShareUserRepository
-import knu.MoApp.Repository.UserRepository
+import knu.MoApp.Repository.*
 import knu.MoApp.Service.ShareService
 import knu.MoApp.data.Dto.Share.Req.SharePatchReq
 import knu.MoApp.data.Dto.Share.Req.SharePostReq
@@ -10,17 +8,23 @@ import knu.MoApp.data.Dto.Share.Res.ShareRes
 import knu.MoApp.data.Dto.User.Res.UserInfoRes
 import knu.MoApp.data.Entity.Embedded.ShareUserRelation
 import knu.MoApp.data.Entity.Share
+import knu.MoApp.data.Entity.ShareSchedule
+import knu.MoApp.data.Entity.ShareScheduleReq
 import knu.MoApp.data.Entity.ShareUser
+import knu.MoApp.data.Enum.ShareScheduleStatusEnum
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
 class ShareServiceImpl(
     private val userRepository: UserRepository,
     private val shareRepository: ShareRepository,
-    private val shareUserRepository: ShareUserRepository
+    private val shareUserRepository: ShareUserRepository,
+    private val shareScheduleRepository: ShareScheduleRepository,
+    private val shareScheduleReqRepository: ShareScheduleReqRepository
 ): ShareService {
 
     override fun share(authentication: Authentication): ResponseEntity<ArrayList<ShareRes>> {
@@ -73,8 +77,12 @@ class ShareServiceImpl(
             if(addUser.isEmpty)
                 return ResponseEntity(HttpStatus.BAD_REQUEST)
             shareUserRepository.save(ShareUser(ShareUserRelation(addUser.get(), share)))
+            shareScheduleReqRepository.save(ShareScheduleReq(ShareUserRelation(addUser.get(), share), false))
         }
         shareUserRepository.save(ShareUser(ShareUserRelation(user.get(), share)))
+
+        shareScheduleRepository.save(ShareSchedule(id = null,
+            share = share, startTime = 25, endTime = 25, date = LocalDate.now(), shareScheduleStatusEnum = ShareScheduleStatusEnum.Inactive))
 
         return ResponseEntity(HttpStatus.OK)
     }

@@ -7,5 +7,5 @@ import java.time.LocalDate
 
 interface UserScheduleInShareRepository:JpaRepository<UserScheduleInShare, Int> {
 
-    fun findByShareUserAndAndDate(shareUser: ShareUser, date: LocalDate): List<UserScheduleInShare>
+    fun findByShareUserAndDate(shareUser: ShareUser, date: LocalDate): List<UserScheduleInShare>
 }
