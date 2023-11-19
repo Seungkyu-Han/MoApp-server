@@ -1,7 +1,8 @@
 package knu.MoApp.Service
 
 import knu.MoApp.data.Dto.ShareSchedule.Req.ShareSchedulePostReq
-import knu.MoApp.data.Dto.ShareSchedule.ShareScheduleActiveRes
+import knu.MoApp.data.Dto.ShareSchedule.Res.ShareScheduleActiveRes
+import knu.MoApp.data.Dto.ShareSchedule.Res.ShareScheduleUserScheduleGetRes
 import knu.MoApp.data.Enum.ShareScheduleStatusEnum
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,4 +18,5 @@ interface ShareScheduleService {
     fun state(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleStatusEnum>
     fun scheduleReq(id: Int, available: Boolean, authentication: Authentication): ResponseEntity<HttpStatus>
     fun active(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleActiveRes>
+    fun userSchedule(id: Int, authentication: Authentication): ResponseEntity<MutableList<ShareScheduleUserScheduleGetRes>>
 }

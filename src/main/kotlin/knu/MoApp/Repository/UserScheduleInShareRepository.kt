@@ -8,4 +8,6 @@ import java.time.LocalDate
 interface UserScheduleInShareRepository:JpaRepository<UserScheduleInShare, Int> {
 
     fun findByShareUserAndDate(shareUser: ShareUser, date: LocalDate): List<UserScheduleInShare>
+
+    fun findByShareUserOrderByDateAsc(shareUser: ShareUser): List<UserScheduleInShare>
 }

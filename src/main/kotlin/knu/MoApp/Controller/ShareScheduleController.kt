@@ -3,7 +3,8 @@ package knu.MoApp.Controller
 import io.swagger.annotations.*
 import knu.MoApp.Service.ShareScheduleService
 import knu.MoApp.data.Dto.ShareSchedule.Req.ShareSchedulePostReq
-import knu.MoApp.data.Dto.ShareSchedule.ShareScheduleActiveRes
+import knu.MoApp.data.Dto.ShareSchedule.Res.ShareScheduleActiveRes
+import knu.MoApp.data.Dto.ShareSchedule.Res.ShareScheduleUserScheduleGetRes
 import knu.MoApp.data.Enum.ShareScheduleStatusEnum
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -99,5 +100,21 @@ class ShareScheduleController(private val shareScheduleService: ShareScheduleSer
     )
     fun active(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<ShareScheduleActiveRes>{
         return shareScheduleService.active(id, authentication)
+    }
+
+    @GetMapping("/user-schedule")
+    @ApiOperation(
+        value = "해당 공유방에서 본인이 작성한 개인 스케줄의 정보를 가져옵니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "조회 성공"),
+        ApiResponse(code = 403, message = "권한 없음"),
+        ApiResponse(code = 404, message = "없는 공유방 id 혹은 해당 공유방에 속하지 않은 유저")
+    )
+    @ApiImplicitParams(
+        ApiImplicitParam(name = "id", value = "공유방의 id", dataTypeClass = Int::class, paramType = "query")
+    )
+    fun userSchedule(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<MutableList<ShareScheduleUserScheduleGetRes>>{
+        return shareScheduleService.userSchedule(id, authentication)
     }
 }

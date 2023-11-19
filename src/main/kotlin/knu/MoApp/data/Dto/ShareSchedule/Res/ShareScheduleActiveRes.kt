@@ -1,4 +1,4 @@
-package knu.MoApp.data.Dto.ShareSchedule
+package knu.MoApp.data.Dto.ShareSchedule.Res
 
 import knu.MoApp.data.Entity.ShareSchedule
 import java.time.LocalDate
