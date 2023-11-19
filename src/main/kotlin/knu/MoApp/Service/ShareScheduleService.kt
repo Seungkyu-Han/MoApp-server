@@ -13,6 +13,7 @@ interface ShareScheduleService {
 
     fun schedule(id: Int, authentication: Authentication): ResponseEntity<Array<BooleanArray>>
     fun schedule(shareSchedulePostReq: ShareSchedulePostReq, authentication: Authentication): ResponseEntity<HttpStatus>
+    fun deleteSchedule(id: Int, authentication: Authentication): ResponseEntity<HttpStatus>
     fun state(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleStatusEnum>
     fun scheduleReq(id: Int, available: Boolean, authentication: Authentication): ResponseEntity<HttpStatus>
     fun active(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleActiveRes>

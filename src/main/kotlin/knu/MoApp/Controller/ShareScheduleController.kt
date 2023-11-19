@@ -23,6 +23,9 @@ class ShareScheduleController(private val shareScheduleService: ShareScheduleSer
     @ApiResponses(
         ApiResponse(code = 200, message = "조회 성공")
     )
+    @ApiImplicitParams(
+        ApiImplicitParam(name = "id", value = "조회하려는 그룹의 id", dataTypeClass = Int::class, paramType = "query")
+    )
     fun schedule(id: Int, @ApiIgnore authentication: Authentication):ResponseEntity<Array<BooleanArray>>{
         return shareScheduleService.schedule(id, authentication)
     }
@@ -36,6 +39,20 @@ class ShareScheduleController(private val shareScheduleService: ShareScheduleSer
     )
     fun schedule(@RequestBody shareSchedulePostReq: ShareSchedulePostReq, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
         return shareScheduleService.schedule(shareSchedulePostReq, authentication)
+    }
+
+    @DeleteMapping("/schedule")
+    @ApiOperation(
+        value = "해당 그룹에 생긴 미팅을 삭제합니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "삭제 성공")
+    )
+    @ApiImplicitParams(
+        ApiImplicitParam(name = "id", value = "Active 상태를 해제하고 싶은 그룹의 id", dataTypeClass = Int::class, paramType = "query")
+    )
+    fun deleteSchedule(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
+        return shareScheduleService.deleteSchedule(id, authentication)
     }
 
     @PutMapping("/schedule-req")

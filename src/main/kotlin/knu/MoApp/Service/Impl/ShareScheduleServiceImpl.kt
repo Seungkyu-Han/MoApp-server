@@ -93,6 +93,29 @@ class ShareScheduleServiceImpl(
         return ResponseEntity(HttpStatus.CREATED)
     }
 
+    override fun deleteSchedule(id: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
+        val share = shareRepository.findById(id)
+
+        if(share.isEmpty)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        val shareSchedule = shareScheduleRepository.findByShare(share.get())
+
+        if(shareSchedule.shareScheduleStatusEnum != ShareScheduleStatusEnum.Active)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        shareSchedule.shareScheduleStatusEnum = ShareScheduleStatusEnum.Broken
+        shareScheduleRepository.save(shareSchedule)
+
+        val shareScheduleReqList = shareScheduleReqRepository.findByShareUserRelationShare(share.get())
+        for(shareScheduleReq in shareScheduleReqList)
+            shareScheduleReq.available = false
+
+        shareScheduleReqRepository.saveAll(shareScheduleReqList)
+
+        return ResponseEntity(HttpStatus.OK)
+    }
+
     override fun state(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleStatusEnum> {
 
         val share = shareRepository.findById(id)
