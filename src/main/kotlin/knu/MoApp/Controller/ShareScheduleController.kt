@@ -3,6 +3,7 @@ package knu.MoApp.Controller
 import io.swagger.annotations.*
 import knu.MoApp.Service.ShareScheduleService
 import knu.MoApp.data.Dto.ShareSchedule.Req.ShareSchedulePostReq
+import knu.MoApp.data.Dto.ShareSchedule.Req.ShareSchedulePostUserScheduleReq
 import knu.MoApp.data.Dto.ShareSchedule.Res.ShareScheduleActiveRes
 import knu.MoApp.data.Dto.ShareSchedule.Res.ShareScheduleUserScheduleGetRes
 import knu.MoApp.data.Enum.ShareScheduleStatusEnum
@@ -114,7 +115,35 @@ class ShareScheduleController(private val shareScheduleService: ShareScheduleSer
     @ApiImplicitParams(
         ApiImplicitParam(name = "id", value = "공유방의 id", dataTypeClass = Int::class, paramType = "query")
     )
-    fun userSchedule(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<MutableList<ShareScheduleUserScheduleGetRes>>{
-        return shareScheduleService.userSchedule(id, authentication)
+    fun getUserSchedule(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<MutableList<ShareScheduleUserScheduleGetRes>>{
+        return shareScheduleService.getUserSchedule(id, authentication)
+    }
+
+    @PostMapping("/user-schedule")
+    @ApiOperation(
+        value = "해당 공유방에서 개인의 스케줄을 작성합니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 201, message = "작성 성공"),
+        ApiResponse(code = 403, message = "없는 유저입니다."),
+        ApiResponse(code = 404, message = "없는 공유방이거나, 해당 공유방에 참여하지 않은 유저입니다.")
+    )
+    fun postUserSchedule(@RequestBody shareSchedulePostUserScheduleReq: ShareSchedulePostUserScheduleReq, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
+        return shareScheduleService.postUserSchedule(shareSchedulePostUserScheduleReq, authentication)
+    }
+
+    @DeleteMapping("/user-schedule")
+    @ApiOperation(
+        value = "해당 공유방에서 본인이 작성한 개인 스케줄을 삭제합니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "삭제 성공"),
+        ApiResponse(code = 400, message = "없는 개인 스케줄입니다.")
+    )
+    @ApiImplicitParams(
+        ApiImplicitParam(name = "id", value = "공유방의 id", dataTypeClass = Int::class, paramType = "query")
+    )
+    fun deleteUserSchedule(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
+        return shareScheduleService.deleteUserSchedule(id, authentication)
     }
 }

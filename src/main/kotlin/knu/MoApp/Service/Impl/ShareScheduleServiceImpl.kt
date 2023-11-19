@@ -5,10 +5,12 @@ import knu.MoApp.Service.ShareScheduleService
 import knu.MoApp.Util.getDayEnumFromDate
 import knu.MoApp.Util.getDayEnumList
 import knu.MoApp.data.Dto.ShareSchedule.Req.ShareSchedulePostReq
+import knu.MoApp.data.Dto.ShareSchedule.Req.ShareSchedulePostUserScheduleReq
 import knu.MoApp.data.Dto.ShareSchedule.Res.ShareScheduleActiveRes
 import knu.MoApp.data.Dto.ShareSchedule.Res.ShareScheduleUserScheduleGetRes
 import knu.MoApp.data.Entity.Embedded.ShareUserRelation
 import knu.MoApp.data.Entity.ShareScheduleReq
+import knu.MoApp.data.Entity.UserScheduleInShare
 import knu.MoApp.data.Enum.ShareScheduleStatusEnum
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -173,7 +175,7 @@ class ShareScheduleServiceImpl(
         return ResponseEntity(ShareScheduleActiveRes(shareSchedule), HttpStatus.OK)
     }
 
-    override fun userSchedule(
+    override fun getUserSchedule(
         id: Int,
         authentication: Authentication
     ): ResponseEntity<MutableList<ShareScheduleUserScheduleGetRes>> {
@@ -198,5 +200,48 @@ class ShareScheduleServiceImpl(
             response.add(ShareScheduleUserScheduleGetRes(userScheduleInShare))
 
         return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    override fun postUserSchedule(
+        shareSchedulePostUserScheduleReq: ShareSchedulePostUserScheduleReq,
+        authentication: Authentication
+    ): ResponseEntity<HttpStatus> {
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+
+        if(user.isEmpty)
+            return ResponseEntity(HttpStatus.FORBIDDEN)
+
+        val share = shareRepository.findById(shareSchedulePostUserScheduleReq.id)
+
+        if(share.isEmpty)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        val shareUser = shareUserRepository.findById(ShareUserRelation(user.get(), share.get()))
+
+        if(shareUser.isEmpty)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        val userScheduleInShare = UserScheduleInShare(
+            id = null,
+            shareUser = shareUser.get(),
+            startTime = shareSchedulePostUserScheduleReq.startTime,
+            endTime = shareSchedulePostUserScheduleReq.endTime,
+            date = shareSchedulePostUserScheduleReq.date
+        )
+
+        userScheduleInShareRepository.save(userScheduleInShare)
+
+        return ResponseEntity(HttpStatus.CREATED)
+    }
+
+    override fun deleteUserSchedule(id: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
+        val userScheduleInShare = userScheduleInShareRepository.findById(id)
+
+        if(userScheduleInShare.isEmpty)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        userScheduleInShareRepository.delete(userScheduleInShare.get())
+
+        return ResponseEntity(HttpStatus.OK)
     }
 }

@@ -1,6 +1,7 @@
 package knu.MoApp.Service
 
 import knu.MoApp.data.Dto.ShareSchedule.Req.ShareSchedulePostReq
+import knu.MoApp.data.Dto.ShareSchedule.Req.ShareSchedulePostUserScheduleReq
 import knu.MoApp.data.Dto.ShareSchedule.Res.ShareScheduleActiveRes
 import knu.MoApp.data.Dto.ShareSchedule.Res.ShareScheduleUserScheduleGetRes
 import knu.MoApp.data.Enum.ShareScheduleStatusEnum
@@ -18,5 +19,7 @@ interface ShareScheduleService {
     fun state(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleStatusEnum>
     fun scheduleReq(id: Int, available: Boolean, authentication: Authentication): ResponseEntity<HttpStatus>
     fun active(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleActiveRes>
-    fun userSchedule(id: Int, authentication: Authentication): ResponseEntity<MutableList<ShareScheduleUserScheduleGetRes>>
+    fun getUserSchedule(id: Int, authentication: Authentication): ResponseEntity<MutableList<ShareScheduleUserScheduleGetRes>>
+    fun postUserSchedule(shareSchedulePostUserScheduleReq: ShareSchedulePostUserScheduleReq, authentication: Authentication): ResponseEntity<HttpStatus>
+    fun deleteUserSchedule(id: Int, authentication: Authentication): ResponseEntity<HttpStatus>
 }
