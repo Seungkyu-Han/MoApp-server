@@ -12,7 +12,7 @@ data class UserSchedule(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int?,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne
     val user: User,
 
     var startTime: Int,
