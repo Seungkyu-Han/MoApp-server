@@ -2,7 +2,7 @@ package knu.MoApp.Controller
 
 import io.swagger.annotations.*
 import knu.MoApp.Service.FriendService
-import knu.MoApp.data.Dto.Friend.Res.FriendRes
+import knu.MoApp.data.Dto.Friend.Res.FriendGetFriendRes
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
@@ -22,7 +22,7 @@ class FriendController(private val friendService: FriendService) {
         ApiResponse(code = 200, message = "조회 성공"),
         ApiResponse(code = 401, message = "권한 없음")
     )
-    fun getFriend(@ApiIgnore authentication: Authentication): ResponseEntity<ArrayList<FriendRes>?> {
+    fun getFriend(@ApiIgnore authentication: Authentication): ResponseEntity<ArrayList<FriendGetFriendRes>> {
         return friendService.getFriend(authentication)
     }
 
@@ -66,7 +66,7 @@ class FriendController(private val friendService: FriendService) {
         ApiResponse(code = 200, message = "조회 성공"),
         ApiResponse(code = 401, message = "권한 없음")
     )
-    fun getAddFriend(@ApiIgnore authentication: Authentication): ResponseEntity<ArrayList<FriendRes>?> {
+    fun getAddFriend(@ApiIgnore authentication: Authentication): ResponseEntity<ArrayList<FriendGetFriendRes>> {
         return friendService.getAddFriend(authentication)
     }
     @PostMapping("/add-friend")

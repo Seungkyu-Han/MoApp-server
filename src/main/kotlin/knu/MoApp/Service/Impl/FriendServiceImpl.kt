@@ -4,7 +4,7 @@ import knu.MoApp.Repository.AddFriendRepository
 import knu.MoApp.Repository.FriendRepository
 import knu.MoApp.Repository.UserRepository
 import knu.MoApp.Service.FriendService
-import knu.MoApp.data.Dto.Friend.Res.FriendRes
+import knu.MoApp.data.Dto.Friend.Res.FriendGetFriendRes
 import knu.MoApp.data.Entity.AddFriend
 import knu.MoApp.data.Entity.Embedded.FriendRelation
 import knu.MoApp.data.Entity.Friend
@@ -20,16 +20,16 @@ class FriendServiceImpl(
     private val addFriendRepository: AddFriendRepository
 ): FriendService {
 
-    override fun getFriend(authentication: Authentication): ResponseEntity<ArrayList<FriendRes>?> {
+    override fun getFriend(authentication: Authentication): ResponseEntity<ArrayList<FriendGetFriendRes>> {
         val user = userRepository.findById(Integer.valueOf(authentication.name))
 
         if(user.isEmpty)
             return ResponseEntity(null, HttpStatus.UNAUTHORIZED)
 
-        val result = ArrayList<FriendRes>()
+        val result = ArrayList<FriendGetFriendRes>()
 
         for(friend in friendRepository.getFriendList(user.get()))
-            result.add(FriendRes(friend.friendRelation.user2))
+            result.add(FriendGetFriendRes(friend.friendRelation.user2))
 
         return ResponseEntity(result, HttpStatus.OK)
     }
@@ -80,16 +80,16 @@ class FriendServiceImpl(
         return ResponseEntity(HttpStatus.OK)
     }
 
-    override fun getAddFriend(authentication: Authentication): ResponseEntity<ArrayList<FriendRes>?> {
+    override fun getAddFriend(authentication: Authentication): ResponseEntity<ArrayList<FriendGetFriendRes>> {
         val user = userRepository.findById(Integer.valueOf(authentication.name))
 
         if(user.isEmpty)
             return ResponseEntity(null, HttpStatus.UNAUTHORIZED)
 
-        val result = ArrayList<FriendRes>()
+        val result = ArrayList<FriendGetFriendRes>()
 
         for(addFriend in addFriendRepository.getAddFriendList(user.get()))
-            result.add(FriendRes(addFriend.friendRelation.user2))
+            result.add(FriendGetFriendRes(addFriend.friendRelation.user2))
 
         return ResponseEntity(result, HttpStatus.OK)
     }
