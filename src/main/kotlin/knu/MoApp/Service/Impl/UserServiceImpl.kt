@@ -5,8 +5,8 @@ import com.google.gson.JsonParser
 import knu.MoApp.Config.Jwt.JwtTokenProvider
 import knu.MoApp.Repository.UserRepository
 import knu.MoApp.Service.UserService
-import knu.MoApp.data.Dto.Auth.Req.AuthLoginReq
-import knu.MoApp.data.Dto.Auth.Res.AuthLoginRes
+import knu.MoApp.data.Dto.Auth.Req.AuthGetLoginReq
+import knu.MoApp.data.Dto.Auth.Res.AuthGetLoginRes
 import knu.MoApp.data.Dto.User.Req.UserInfoReq
 import knu.MoApp.data.Dto.User.Res.UserInfoRes
 import knu.MoApp.data.Entity.User
@@ -42,13 +42,13 @@ class UserServiceImpl(
 ) :UserService{
 
     private val reqUrl = "https://kauth.kakao.com/oauth/token"
-    override fun login(code: String): ResponseEntity<AuthLoginRes?> {
+    override fun login(code: String): ResponseEntity<AuthGetLoginRes> {
         val kakaoAccessToken = getKakaoAccessToken(code)
 
         return loginKakaoAccess(kakaoAccessToken)
     }
 
-    override fun loginKakaoAccess(token: String): ResponseEntity<AuthLoginRes?> {
+    override fun loginKakaoAccess(token: String): ResponseEntity<AuthGetLoginRes> {
 
         val element = getJsonElementByAccessToken(token)
 
@@ -63,10 +63,10 @@ class UserServiceImpl(
         optionalUser.get().accessToken = accessToken
         userRepository.save(optionalUser.get())
 
-        return ResponseEntity(AuthLoginRes(name = optionalUser.get().name, id = optionalUser.get().id, accessToken = accessToken), HttpStatus.OK)
+        return ResponseEntity(AuthGetLoginRes(name = optionalUser.get().name, id = optionalUser.get().id, accessToken = accessToken), HttpStatus.OK)
     }
 
-    private fun register(id: Int): ResponseEntity<AuthLoginRes?> {
+    private fun register(id: Int): ResponseEntity<AuthGetLoginRes> {
         val user = User(
             id = id,
             name = toHashName(id),
@@ -77,7 +77,7 @@ class UserServiceImpl(
         )
         userRepository.save(user)
 
-        return ResponseEntity(AuthLoginRes(name = user.name, id = user.id, accessToken = user.accessToken), HttpStatus.CREATED)
+        return ResponseEntity(AuthGetLoginRes(name = user.name, id = user.id, accessToken = user.accessToken), HttpStatus.CREATED)
     }
 
     private fun toHashName(id: Int): String {
@@ -99,12 +99,12 @@ class UserServiceImpl(
 
     }
 
-    override fun login(authLoginReq: AuthLoginReq): ResponseEntity<AuthLoginRes?> {
+    override fun login(authLoginReq: AuthGetLoginReq): ResponseEntity<AuthGetLoginRes> {
         val user = userRepository.findByAccessToken(authLoginReq.accessToken)
             ?: return ResponseEntity(null, HttpStatus.UNAUTHORIZED)
 
 
-        return ResponseEntity(AuthLoginRes(name = user.name, id = user.id, accessToken = authLoginReq.accessToken), HttpStatus.OK)
+        return ResponseEntity(AuthGetLoginRes(name = user.name, id = user.id, accessToken = authLoginReq.accessToken), HttpStatus.OK)
     }
 
     override fun check(authentication: Authentication): ResponseEntity<HttpStatus> {

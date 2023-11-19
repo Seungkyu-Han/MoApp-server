@@ -1,7 +1,7 @@
 package knu.MoApp.Service
 
-import knu.MoApp.data.Dto.Auth.Req.AuthLoginReq
-import knu.MoApp.data.Dto.Auth.Res.AuthLoginRes
+import knu.MoApp.data.Dto.Auth.Req.AuthGetLoginReq
+import knu.MoApp.data.Dto.Auth.Res.AuthGetLoginRes
 import knu.MoApp.data.Dto.User.Req.UserInfoReq
 import knu.MoApp.data.Dto.User.Res.UserInfoRes
 import org.springframework.http.HttpStatus
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service
 
 @Service
 interface UserService {
-    fun login(code: String): ResponseEntity<AuthLoginRes?>
+    fun login(code: String): ResponseEntity<AuthGetLoginRes>
 
-    fun login(authLoginReq: AuthLoginReq): ResponseEntity<AuthLoginRes?>
-    fun loginKakaoAccess(token: String): ResponseEntity<AuthLoginRes?>
+    fun login(authLoginReq: AuthGetLoginReq): ResponseEntity<AuthGetLoginRes>
+    fun loginKakaoAccess(token: String): ResponseEntity<AuthGetLoginRes>
     fun info(userInfoReq: UserInfoReq, authentication: Authentication): ResponseEntity<HttpStatus>
     fun name(name:String): ResponseEntity<Boolean>
     fun check(authentication: Authentication): ResponseEntity<HttpStatus>
