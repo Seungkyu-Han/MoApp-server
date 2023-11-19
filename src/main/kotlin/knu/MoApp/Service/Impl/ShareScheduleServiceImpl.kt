@@ -5,6 +5,7 @@ import knu.MoApp.Service.ShareScheduleService
 import knu.MoApp.Util.getDayEnumFromDate
 import knu.MoApp.Util.getDayEnumList
 import knu.MoApp.data.Dto.ShareSchedule.Req.ShareSchedulePostReq
+import knu.MoApp.data.Dto.ShareSchedule.ShareScheduleActiveRes
 import knu.MoApp.data.Entity.Embedded.ShareUserRelation
 import knu.MoApp.data.Entity.ShareScheduleReq
 import knu.MoApp.data.Enum.ShareScheduleStatusEnum
@@ -127,5 +128,24 @@ class ShareScheduleServiceImpl(
             shareScheduleReqRepository.saveAll(shareScheduleReqList)
             return ResponseEntity(HttpStatus.OK)
         }
+    }
+
+    override fun active(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleActiveRes> {
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+
+        if(user.isEmpty)
+            return ResponseEntity(HttpStatus.FORBIDDEN)
+
+        val share = shareRepository.findById(id)
+
+        if(share.isEmpty)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        val shareSchedule = shareScheduleRepository.findByShare(share.get())
+
+        if(shareSchedule.shareScheduleStatusEnum != ShareScheduleStatusEnum.Active)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        return ResponseEntity(ShareScheduleActiveRes(shareSchedule), HttpStatus.OK)
     }
 }

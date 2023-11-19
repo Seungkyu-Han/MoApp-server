@@ -71,7 +71,7 @@ class UserController(val userService: UserService) {
         ApiResponse(code = 200, message = "변경 성공")
     )
     @ApiImplicitParams(
-        ApiImplicitParam(name = "state", value = "친구 요청 상태", dataType = "Boolean", paramType = "query")
+        ApiImplicitParam(name = "state", value = "친구 요청 상태", dataTypeClass = Boolean::class, paramType = "query")
     )
     fun addFriend(state: Boolean, @ApiIgnore authentication: Authentication):ResponseEntity<HttpStatus>{
         return userService.addFriend(state, authentication)
@@ -96,7 +96,7 @@ class UserController(val userService: UserService) {
         ApiResponse(code = 200, message = "변경 성공")
     )
     @ApiImplicitParams(
-        ApiImplicitParam(name = "state", value = "친구 요청 상태", dataType = "Boolean", paramType = "query")
+        ApiImplicitParam(name = "state", value = "친구 요청 상태", dataTypeClass = Boolean::class, paramType = "query")
     )
     fun addShare(state: Boolean, @ApiIgnore authentication: Authentication):ResponseEntity<HttpStatus>{
         return userService.addShare(state, authentication)

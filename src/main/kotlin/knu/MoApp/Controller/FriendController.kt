@@ -31,7 +31,7 @@ class FriendController(private val friendService: FriendService) {
         value = "친구를 추가합니다."
     )
     @ApiImplicitParams(
-        ApiImplicitParam(name = "id", value = "추가하고 싶은 친구의 id", dataType = "Integer", paramType = "query")
+        ApiImplicitParam(name = "id", value = "추가하고 싶은 친구의 id", dataTypeClass = Int::class, paramType = "query")
     )
     @ApiResponses(
         ApiResponse(code = 200, message = "조회 성공"),
@@ -47,7 +47,7 @@ class FriendController(private val friendService: FriendService) {
         value = "친구 관계를 삭제합니다."
     )
     @ApiImplicitParams(
-        ApiImplicitParam(name = "id", value = "삭제하고 싶은 친구의 id", dataType = "Integer", paramType = "query")
+        ApiImplicitParam(name = "id", value = "삭제하고 싶은 친구의 id", dataTypeClass = Int::class, paramType = "query")
     )
     @ApiResponses(
         ApiResponse(code = 200, message = "삭제 성공"),
@@ -74,7 +74,7 @@ class FriendController(private val friendService: FriendService) {
         value = "친구를 요청합니다."
     )
     @ApiImplicitParams(
-        ApiImplicitParam(name = "name", value = "추가하고 싶은 친구의 name", dataType = "String", paramType = "query")
+        ApiImplicitParam(name = "name", value = "추가하고 싶은 친구의 name", dataTypeClass = String::class, paramType = "query")
     )
     @ApiResponses(
         ApiResponse(code = 200, message = "요청 성공"),
@@ -90,7 +90,7 @@ class FriendController(private val friendService: FriendService) {
         value = "친구 요청을 거절합니다."
     )
     @ApiImplicitParams(
-        ApiImplicitParam(name = "id", value = "거절하고 싶은 친구의 id", dataType = "Integer", paramType = "query")
+        ApiImplicitParam(name = "id", value = "거절하고 싶은 친구의 id", dataTypeClass = Int::class, paramType = "query")
     )
     @ApiResponses(
         ApiResponse(code = 200, message = "삭제 성공"),

@@ -3,6 +3,7 @@ package knu.MoApp.Controller
 import io.swagger.annotations.*
 import knu.MoApp.Service.ShareScheduleService
 import knu.MoApp.data.Dto.ShareSchedule.Req.ShareSchedulePostReq
+import knu.MoApp.data.Dto.ShareSchedule.ShareScheduleActiveRes
 import knu.MoApp.data.Enum.ShareScheduleStatusEnum
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -48,8 +49,8 @@ class ShareScheduleController(private val shareScheduleService: ShareScheduleSer
         ApiResponse(code = 201, message = "작성 성공")
     )
     @ApiImplicitParams(
-        ApiImplicitParam(name = "id", value = "공유방의 Id", dataType = "Int", paramType = "query"),
-        ApiImplicitParam(name = "available", value = "본인의 상태", dataType = "Boolean", paramType = "query")
+        ApiImplicitParam(name = "id", value = "공유방의 Id", dataTypeClass = Int::class, paramType = "query"),
+        ApiImplicitParam(name = "available", value = "본인의 상태", dataTypeClass = Boolean::class, paramType = "query")
     )
     fun scheduleReq(id: Int, available: Boolean, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
         return shareScheduleService.scheduleReq(id, available, authentication)
@@ -67,6 +68,19 @@ class ShareScheduleController(private val shareScheduleService: ShareScheduleSer
         return shareScheduleService.state(id, authentication)
     }
 
-
-
+    @GetMapping("/active")
+    @ApiOperation(
+        value = "해당 그룹의 스케줄이 Active 상태라면, 해당 Active 상태의 스케줄 정보를 가져옵니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "조회 성공"),
+        ApiResponse(code = 404, message = "Active 상태가 아니거나 해당 공유방이 없습니다."),
+        ApiResponse(code = 500, message = "알 수 없는 오류")
+    )
+    @ApiImplicitParams(
+        ApiImplicitParam(name = "id", value = "공유방의 id", dataTypeClass = Int::class, paramType = "query")
+    )
+    fun active(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<ShareScheduleActiveRes>{
+        return shareScheduleService.active(id, authentication)
+    }
 }

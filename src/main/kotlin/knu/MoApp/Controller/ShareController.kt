@@ -60,7 +60,7 @@ class ShareController(private val shareService: ShareService) {
         ApiResponse(code = 200, message = "탈퇴 성공")
     )
     @ApiImplicitParams(
-        ApiImplicitParam(name = "id", value = "탈퇴하려는 공유방의 ID", dataType = "Integer", paramType = "query")
+        ApiImplicitParam(name = "id", value = "탈퇴하려는 공유방의 ID", dataTypeClass = Int::class, paramType = "query")
     )
     fun group(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
         return shareService.share(id, authentication)
