@@ -86,6 +86,12 @@ class UserScheduleServiceImpl(
         if(userSchedule.get().user != user.get())
             return ResponseEntity(HttpStatus.FORBIDDEN)
 
+        if(startTime > endTime)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
+        if(userScheduleRepository.hasTimeConflict(startTime, endTime, day, user.get()) > 0)
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+
         userSchedule.get().startTime = startTime
         userSchedule.get().endTime = endTime
         userSchedule.get().day = day

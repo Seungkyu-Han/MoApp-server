@@ -52,7 +52,7 @@ class UserScheduleController(private val userScheduleService: UserScheduleServic
         ApiResponse(code = 200, message = "수정 성공"),
         ApiResponse(code = 400, message = "해당 스케줄이 없음"),
         ApiResponse(code = 403, message = "유저가 생성한 스케줄이 아님"),
-        ApiResponse(code = 404, message = "해당 유저가 없음")
+        ApiResponse(code = 404, message = "해당 유저가 없음\nstartTime > endTime 에러\n해당 시간 불가능")
     )
     fun schedule(id: Int, startTime: Int, endTime: Int, day: DayEnum, scheduleName: String, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus> {
         return userScheduleService.schedule(id, startTime, endTime, day, scheduleName, authentication)
