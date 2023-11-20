@@ -11,11 +11,11 @@ import org.springframework.stereotype.Repository
 interface UserScheduleRepository: JpaRepository<UserSchedule, Int> {
 
     @Query(
-        "SELECT COUNT(us) FROM UserSchedule us " +
+        "SELECT us.id FROM UserSchedule us " +
                 "WHERE us.day = :day AND us.user = :user " +
                 "AND (us.startTime between :startTime and :endTime OR us.endTime between :startTime and :endTime)"
     )
-    fun hasTimeConflict(startTime: Int, endTime: Int, day: DayEnum, user: User): Int
+    fun hasTimeConflict(startTime: Int, endTime: Int, day: DayEnum, user: User): List<Int>
 
     fun findByUser(user: User): List<UserSchedule>
 
