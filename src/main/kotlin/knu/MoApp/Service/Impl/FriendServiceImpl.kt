@@ -105,6 +105,11 @@ class FriendServiceImpl(
         if(!friend.add_friend)
             return ResponseEntity(HttpStatus.BAD_REQUEST)
 
+        val friendEntity = friendRepository.findById(FriendRelation(user.get(), friend))
+
+        if(friendEntity.isPresent)
+            return ResponseEntity(HttpStatus.CONFLICT)
+
         addFriendRepository.save(AddFriend(FriendRelation(friend, user.get())))
 
         return ResponseEntity(HttpStatus.OK)

@@ -80,7 +80,8 @@ class FriendController(private val friendService: FriendService) {
         ApiResponse(code = 200, message = "요청 성공"),
         ApiResponse(code = 400, message = "친구 요청을 거절한 상대입니다."),
         ApiResponse(code = 401, message = "권한 없음"),
-        ApiResponse(code = 404, message = "해당 유저가 없습니다.")
+        ApiResponse(code = 404, message = "해당 유저가 없습니다."),
+        ApiResponse(code = 409, message = "이미 친구 상태입니다.")
     )
     fun addAddFriend(@RequestParam name: String, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus> {
         return friendService.addAddFriend(name, authentication)
