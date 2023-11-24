@@ -91,10 +91,11 @@ class UserScheduleServiceImpl(
 
         val userScheduleList = userScheduleRepository.hasTimeConflict(startTime, endTime, day, user.get())
 
-        print(userScheduleList)
+        if(userScheduleList.size > 1)
+            return ResponseEntity(HttpStatus.CONFLICT)
 
-        if(!(userScheduleList.isEmpty() || (userScheduleList.size == 1 && userScheduleList[0] == id)))
-            return ResponseEntity(HttpStatus.BAD_REQUEST)
+        if(userScheduleList[0].id != id)
+            return ResponseEntity(HttpStatus.CONFLICT)
 
         userSchedule.get().startTime = startTime
         userSchedule.get().endTime = endTime
@@ -135,8 +136,11 @@ class UserScheduleServiceImpl(
             day ?: userSchedule.get().day, user.get())
 
 
-        if(!(userScheduleList.isEmpty() || (userScheduleList.size == 1 && userScheduleList[0] == id)))
-            return ResponseEntity(HttpStatus.BAD_REQUEST)
+        if(userScheduleList.size > 1)
+            return ResponseEntity(HttpStatus.CONFLICT)
+
+        if(userScheduleList[0].id != id)
+            return ResponseEntity(HttpStatus.CONFLICT)
 
         userSchedule.get().startTime = startTime ?: userSchedule.get().startTime
         userSchedule.get().endTime = endTime ?: userSchedule.get().endTime
