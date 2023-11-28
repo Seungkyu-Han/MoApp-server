@@ -148,8 +148,6 @@ class ShareServiceImpl(
 
         val currentHour = LocalTime.now().hour
 
-        print(currentHour)
-
         val shareSchedule = shareScheduleRepository.findNearByUser(user.get(), currentHour) ?: return ResponseEntity(HttpStatus.NOT_FOUND)
 
 
