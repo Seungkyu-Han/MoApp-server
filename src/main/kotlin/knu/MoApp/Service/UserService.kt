@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 interface UserService {
@@ -23,4 +24,5 @@ interface UserService {
     fun addFriend(state: Boolean, authentication: Authentication): ResponseEntity<HttpStatus>
     fun addShare(authentication: Authentication): ResponseEntity<Boolean>
     fun addShare(state: Boolean, authentication: Authentication): ResponseEntity<HttpStatus>
+    fun image(multipartFile: MultipartFile, authentication: Authentication): ResponseEntity<HttpStatus>
 }

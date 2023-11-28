@@ -1,5 +1,7 @@
 package knu.MoApp.Service.Impl
 
+import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.ObjectMetadata
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import knu.MoApp.Config.Jwt.JwtTokenProvider
@@ -15,6 +17,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
+import org.springframework.util.StringUtils
+import org.springframework.web.multipart.MultipartFile
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.InputStreamReader
@@ -30,6 +34,7 @@ import java.util.*
 class UserServiceImpl(
     private val userRepository: UserRepository,
     private val jwtTokenProvider: JwtTokenProvider,
+    private val amazonS3Client: AmazonS3Client,
 
     @Value("\${kakao.auth.client_id}")
     private val client_id: String,
@@ -38,7 +43,18 @@ class UserServiceImpl(
     private val redirect_uri: String,
 
     @Value("\${jwt.secret.key}")
-    private val secretKey: String
+    private val secretKey: String,
+
+    @Value("\${cloud.aws.s3.bucket}")
+    private val bucket: String,
+
+    @Value("\${cloud.aws.s3.path}")
+    private val path: String,
+
+    @Value("\${cloud.aws.s3.path-img}")
+    private val pathImg: String,
+
+
 ) :UserService{
 
     private val reqUrl = "https://kauth.kakao.com/oauth/token"
@@ -180,6 +196,23 @@ class UserServiceImpl(
         userRepository.save(user.get())
 
         return ResponseEntity(HttpStatus.OK)
+    }
+
+    override fun image(multipartFile: MultipartFile, authentication: Authentication): ResponseEntity<HttpStatus> {
+        val user = userRepository.findById(Integer.valueOf(authentication.name))
+
+        val uuidName = pathImg + UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartFile.originalFilename)
+
+        val objectMetadata = ObjectMetadata()
+        objectMetadata.contentType = multipartFile.contentType
+        objectMetadata.contentLength = multipartFile.size
+        amazonS3Client.putObject(bucket, uuidName, multipartFile.inputStream, objectMetadata)
+
+        user.get().img = path  +  uuidName
+        userRepository.save(user.get())
+
+        return ResponseEntity(HttpStatus.CREATED)
+
     }
 
     private fun getKakaoAccessToken(code: String): String {

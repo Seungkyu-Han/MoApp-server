@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import springfox.documentation.annotations.ApiIgnore
 
 @RestController
@@ -100,5 +101,16 @@ class UserController(val userService: UserService) {
     )
     fun addShare(state: Boolean, @ApiIgnore authentication: Authentication):ResponseEntity<HttpStatus>{
         return userService.addShare(state, authentication)
+    }
+
+    @PostMapping("/image")
+    @ApiOperation(
+        value = "프로필 이미지 변경"
+    )
+    @ApiResponses(
+        ApiResponse(code = 201, message = "변경 성공")
+    )
+    fun image(@RequestPart multipartFile: MultipartFile, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
+        return userService.image(multipartFile, authentication)
     }
 }

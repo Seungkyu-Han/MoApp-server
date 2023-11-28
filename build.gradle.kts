@@ -54,6 +54,9 @@ dependencies {
 	//KAKAO gson
 	implementation ("com.google.code.gson:gson:2.10.1")
 
+	//kakao
+	implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
+
 	annotationProcessor("org.projectlombok:lombok")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
