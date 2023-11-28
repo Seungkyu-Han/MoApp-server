@@ -30,4 +30,15 @@ interface ShareScheduleRepository: JpaRepository<ShareSchedule, Int> {
     fun findFixShareScheduleByUserAndDate(user: User, status: ShareScheduleStatusEnum, date: LocalDate): List<ShareSchedule>
 
     fun findByShare(share: Share):ShareSchedule
+
+    @Query(
+        "SELECT ss FROM ShareSchedule ss " +
+                "INNER JOIN ss.share s " +
+                "INNER JOIN ShareUser su ON su.shareUserRelation.share = s " +
+                "WHERE su.shareUserRelation.user = :user AND " +
+                "(ss.date > CURRENT_DATE OR (ss.date = CURRENT_DATE AND ss.startTime > :currentHour)) " +
+                "AND ss.shareScheduleStatusEnum = 2 " +
+                "ORDER BY ss.date, ss.startTime"
+    )
+    fun findNearByUser(user: User, currentHour: Int): ShareSchedule?
 }

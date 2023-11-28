@@ -4,6 +4,7 @@ import io.swagger.annotations.*
 import knu.MoApp.Service.ShareService
 import knu.MoApp.data.Dto.Share.Req.SharePatchReq
 import knu.MoApp.data.Dto.Share.Req.SharePostReq
+import knu.MoApp.data.Dto.Share.Res.ShareNearRes
 import knu.MoApp.data.Dto.Share.Res.ShareRes
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -64,5 +65,17 @@ class ShareController(private val shareService: ShareService) {
     )
     fun group(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
         return shareService.share(id, authentication)
+    }
+
+    @GetMapping("/near")
+    @ApiOperation(
+        value = "가장 가까운 공유 일정 정보를 가져옵니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "일정 조회 성공"),
+        ApiResponse(code = 404, message = "일정 없음")
+    )
+    fun near(@ApiIgnore authentication: Authentication): ResponseEntity<ShareNearRes>{
+        return shareService.near(authentication)
     }
 }

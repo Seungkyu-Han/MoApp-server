@@ -4,6 +4,7 @@ import knu.MoApp.Repository.*
 import knu.MoApp.Service.ShareService
 import knu.MoApp.data.Dto.Share.Req.SharePatchReq
 import knu.MoApp.data.Dto.Share.Req.SharePostReq
+import knu.MoApp.data.Dto.Share.Res.ShareNearRes
 import knu.MoApp.data.Dto.Share.Res.ShareRes
 import knu.MoApp.data.Dto.User.Res.UserInfoRes
 import knu.MoApp.data.Entity.Embedded.ShareUserRelation
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import java.time.LocalTime
 
 @Service
 class ShareServiceImpl(
@@ -136,5 +138,21 @@ class ShareServiceImpl(
             shareRepository.delete(share.get())
 
         return ResponseEntity(HttpStatus.OK)
+    }
+
+    override fun near(authentication: Authentication): ResponseEntity<ShareNearRes> {
+        val user = userRepository.findById((Integer.valueOf(authentication.name)))
+
+        if(user.isEmpty)
+            return ResponseEntity(HttpStatus.FORBIDDEN)
+
+        val currentHour = LocalTime.now().hour
+
+        print(currentHour)
+
+        val shareSchedule = shareScheduleRepository.findNearByUser(user.get(), currentHour) ?: return ResponseEntity(HttpStatus.NOT_FOUND)
+
+
+        return ResponseEntity(ShareNearRes(shareSchedule), HttpStatus.OK)
     }
 }
