@@ -69,13 +69,16 @@ class FriendServiceImpl(
             return ResponseEntity(HttpStatus.BAD_REQUEST)
 
         val friendRelation = FriendRelation(user1.get(), user2.get())
+        val reverseFriendRelation = FriendRelation(user2.get(), user1.get())
 
         val friend = friendRepository.findById(friendRelation)
+        val reverseFriend = friendRepository.findById(reverseFriendRelation)
 
         if(friend.isEmpty)
             return ResponseEntity(HttpStatus.BAD_REQUEST)
 
         friendRepository.delete(friend.get())
+        friendRepository.delete(reverseFriend.get())
 
         return ResponseEntity(HttpStatus.OK)
     }
