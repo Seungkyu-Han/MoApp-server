@@ -201,12 +201,21 @@ class UserServiceImpl(
     override fun image(multipartFile: MultipartFile, authentication: Authentication): ResponseEntity<HttpStatus> {
         val user = userRepository.findById(Integer.valueOf(authentication.name))
 
-        val uuidName = pathImg + UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartFile.originalFilename)
+        if(user.isEmpty)
+            return ResponseEntity(HttpStatus.FORBIDDEN)
 
-        val objectMetadata = ObjectMetadata()
-        objectMetadata.contentType = multipartFile.contentType
-        objectMetadata.contentLength = multipartFile.size
-        amazonS3Client.putObject(bucket, uuidName, multipartFile.inputStream, objectMetadata)
+        val uuidName: String
+
+        try{
+            uuidName = pathImg + UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartFile.originalFilename)
+
+            val objectMetadata = ObjectMetadata()
+            objectMetadata.contentType = multipartFile.contentType
+            objectMetadata.contentLength = multipartFile.size
+            amazonS3Client.putObject(bucket, uuidName, multipartFile.inputStream, objectMetadata)
+        }catch (e:Exception){
+            return ResponseEntity(HttpStatus.BAD_GATEWAY)
+        }
 
         user.get().img = path  +  uuidName
         userRepository.save(user.get())

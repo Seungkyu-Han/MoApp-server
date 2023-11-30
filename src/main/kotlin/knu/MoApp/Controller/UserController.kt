@@ -108,7 +108,8 @@ class UserController(val userService: UserService) {
         value = "프로필 이미지 변경"
     )
     @ApiResponses(
-        ApiResponse(code = 201, message = "변경 성공")
+        ApiResponse(code = 201, message = "변경 성공"),
+        ApiResponse(code = 404, message = "유저가 아닙니다.")
     )
     fun image(@RequestPart multipartFile: MultipartFile, @ApiIgnore authentication: Authentication): ResponseEntity<HttpStatus>{
         return userService.image(multipartFile, authentication)
