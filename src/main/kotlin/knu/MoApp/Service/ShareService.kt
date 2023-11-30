@@ -16,4 +16,5 @@ interface ShareService {
     fun share(sharePatchReq: SharePatchReq, authentication: Authentication): ResponseEntity<HttpStatus>
     fun share(id: Int, authentication: Authentication): ResponseEntity<HttpStatus>
     fun near(authentication: Authentication): ResponseEntity<ShareNearRes>
+    fun info(id: Int, authentication: Authentication): ResponseEntity<ShareRes>
 }

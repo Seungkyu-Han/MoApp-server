@@ -153,4 +153,28 @@ class ShareServiceImpl(
 
         return ResponseEntity(ShareNearRes(shareSchedule), HttpStatus.OK)
     }
+
+    override fun info(id: Int, authentication: Authentication): ResponseEntity<ShareRes> {
+        val user = userRepository.findById((Integer.valueOf(authentication.name)))
+
+        if(user.isEmpty)
+            return ResponseEntity(HttpStatus.FORBIDDEN)
+
+        val share = shareRepository.findById(id)
+
+        if(share.isEmpty)
+            return ResponseEntity(HttpStatus.NOT_FOUND)
+
+        val userList = shareUserRepository.findUserByShare(share.get())
+
+        val userInfoList = ArrayList<UserInfoRes>()
+        for(userInGroup in userList)
+            userInfoList.add(UserInfoRes(userInGroup))
+
+        return ResponseEntity(ShareRes(id = id,
+            name = share.get().name,
+            userInfoResList = userInfoList,
+            startDate = share.get().startDate,
+            endDate = share.get().endDate), HttpStatus.OK)
+    }
 }

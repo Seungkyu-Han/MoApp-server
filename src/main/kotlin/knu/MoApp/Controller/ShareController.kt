@@ -78,4 +78,20 @@ class ShareController(private val shareService: ShareService) {
     fun near(@ApiIgnore authentication: Authentication): ResponseEntity<ShareNearRes>{
         return shareService.near(authentication)
     }
+
+    @GetMapping("info")
+    @ApiOperation(
+        value = "ID 이용해서 해당 공유방의 정보를 가져옵니다."
+    )
+    @ApiResponses(
+        ApiResponse(code = 200, message = "정보를 조회"),
+        ApiResponse(code = 403, message = "해당 유저가 없음"),
+        ApiResponse(code = 404, message = "해당 공유방이 없음")
+    )
+    @ApiImplicitParams(
+        ApiImplicitParam(name = "id", value = "조회하려는 공유방의 ID", dataTypeClass = Int::class, paramType = "query")
+    )
+    fun info(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<ShareRes>{
+        return shareService.info(id, authentication)
+    }
 }
