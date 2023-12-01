@@ -140,7 +140,7 @@ class UserScheduleServiceImpl(
         if(userScheduleList.size > 1)
             return ResponseEntity(HttpStatus.IM_USED)
 
-        if(userScheduleList[0].id != id)
+        if(userScheduleList.isNotEmpty() && userScheduleList[0].id != id)
             return ResponseEntity(HttpStatus.CONFLICT)
 
         userSchedule.get().startTime = startTime ?: userSchedule.get().startTime
