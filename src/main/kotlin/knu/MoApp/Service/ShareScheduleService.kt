@@ -18,7 +18,7 @@ interface ShareScheduleService {
     fun deleteSchedule(id: Int, authentication: Authentication): ResponseEntity<HttpStatus>
     fun state(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleStatusEnum>
     fun scheduleReq(id: Int, available: Boolean, authentication: Authentication): ResponseEntity<HttpStatus>
-    fun active(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleActiveRes>
+    fun info(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleActiveRes>
     fun getUserSchedule(id: Int, authentication: Authentication): ResponseEntity<MutableList<ShareScheduleUserScheduleGetRes>>
     fun postUserSchedule(shareSchedulePostUserScheduleReq: ShareSchedulePostUserScheduleReq, authentication: Authentication): ResponseEntity<HttpStatus>
     fun deleteUserSchedule(id: Int, authentication: Authentication): ResponseEntity<HttpStatus>

@@ -156,7 +156,7 @@ class ShareScheduleServiceImpl(
         }
     }
 
-    override fun active(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleActiveRes> {
+    override fun info(id: Int, authentication: Authentication): ResponseEntity<ShareScheduleActiveRes> {
         val user = userRepository.findById(Integer.valueOf(authentication.name))
 
         if(user.isEmpty)
@@ -168,9 +168,6 @@ class ShareScheduleServiceImpl(
             return ResponseEntity(HttpStatus.BAD_REQUEST)
 
         val shareSchedule = shareScheduleRepository.findByShare(share.get())
-
-        if(shareSchedule.shareScheduleStatusEnum != ShareScheduleStatusEnum.Active)
-            return ResponseEntity(HttpStatus.BAD_REQUEST)
 
         return ResponseEntity(ShareScheduleActiveRes(shareSchedule), HttpStatus.OK)
     }

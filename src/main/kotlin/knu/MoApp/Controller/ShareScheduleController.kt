@@ -87,20 +87,20 @@ class ShareScheduleController(private val shareScheduleService: ShareScheduleSer
         return shareScheduleService.state(id, authentication)
     }
 
-    @GetMapping("/active")
+    @GetMapping("/info")
     @ApiOperation(
-        value = "해당 그룹의 스케줄이 Active 상태라면, 해당 Active 상태의 스케줄 정보를 가져옵니다."
+        value = "해당 스케줄 정보를 가져옵니다."
     )
     @ApiResponses(
         ApiResponse(code = 200, message = "조회 성공"),
-        ApiResponse(code = 404, message = "Active 상태가 아니거나 해당 공유방이 없습니다."),
+        ApiResponse(code = 404, message = "해당 공유방이 없습니다."),
         ApiResponse(code = 500, message = "알 수 없는 오류")
     )
     @ApiImplicitParams(
         ApiImplicitParam(name = "id", value = "공유방의 id", dataTypeClass = Int::class, paramType = "query")
     )
-    fun active(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<ShareScheduleActiveRes>{
-        return shareScheduleService.active(id, authentication)
+    fun info(id: Int, @ApiIgnore authentication: Authentication): ResponseEntity<ShareScheduleActiveRes>{
+        return shareScheduleService.info(id, authentication)
     }
 
     @GetMapping("/user-schedule")
