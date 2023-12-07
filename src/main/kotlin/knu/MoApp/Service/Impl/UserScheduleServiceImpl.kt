@@ -136,9 +136,8 @@ class UserScheduleServiceImpl(
             day ?: userSchedule.get().day,
                     user.get().id)
 
-
         if(userScheduleList.size > 1)
-            return ResponseEntity(HttpStatus.IM_USED)
+            return ResponseEntity(HttpStatus.CONFLICT)
 
         if(userScheduleList.isNotEmpty() && userScheduleList[0].id != id)
             return ResponseEntity(HttpStatus.CONFLICT)

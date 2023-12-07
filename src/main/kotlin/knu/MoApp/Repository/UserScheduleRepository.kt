@@ -14,7 +14,7 @@ interface UserScheduleRepository: JpaRepository<UserSchedule, Int> {
         "SELECT us FROM UserSchedule us " +
                 "LEFT JOIN us.user u " +
                 "WHERE us.day = :day AND u.id = :user " +
-                "AND ((:startTime <= us.startTime and us.startTime <= :endTime) OR (:startTime <= us.endTime and us.endTime <= :endTime))"
+                "AND ((us.startTime <= :startTime and :startTime <= us.endTime) OR (us.startTime <= :endTime and :endTime <= us.endTime))"
     )
     fun hasTimeConflict(startTime: Int, endTime: Int, day: DayEnum, user: Int): List<UserSchedule>
 
